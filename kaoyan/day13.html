@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Day 13 · No.1099–1190 · 考研大纲词汇</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231d1d1f'/%3E%3Ctext x='32' y='44' font-size='30' font-weight='700' font-family='Segoe UI,Arial,sans-serif' text-anchor='middle' fill='%23fff'%3E研%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="../assets/base.css?v=20261107b">
-<link rel="stylesheet" href="../assets/app.css?v=20261107b">
-<link rel="stylesheet" href="../assets/ky.css?v=20261107b">
+<link rel="stylesheet" href="../assets/base.css?v=20261109a">
+<link rel="stylesheet" href="../assets/app.css?v=20261109a">
+<link rel="stylesheet" href="../assets/ky.css?v=20261109a">
 </head>
 <body>
 
@@ -43,10 +43,20 @@
 <section class="view on" id="p-list">
   <div class="rows">
     <div class="listbar">
+      <span class="fstat" id="fstat"><span>只看不熟 · 还剩</span><b>0</b><span>个</span></span>
+      <button class="pill filt" id="filtBtn" type="button" aria-pressed="false" title="只显示还没打勾的单词">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-6.2 10-6.2S22 12 22 12s-3.8 6.2-10 6.2S2 12 2 12Z"/><circle cx="12" cy="12" r="2.7"/></svg><span>只看不熟</span>
+      </button>
       <button class="pill danger" id="clearBtn" type="button" title="清空本页全部打勾，清空后可撤销" disabled>全部取消打勾</button>
       <button class="pill" id="blurBtn" type="button">遮住释义</button>
     </div>
     <div id="groups"></div>
+    <div class="fempty" id="fempty" hidden>
+      <div class="feic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.9l4.9 4.9L19.6 6.9"/></svg></div>
+      <p class="fet">这一天全部打勾了</p>
+      <p class="fes">92 个词都已标为已会，没有待巩固的不熟词。</p>
+      <button class="pill primary" id="feOff" type="button">看全部词</button>
+    </div>
   </div>
 </section>
 
@@ -102,7 +112,7 @@
 <footer>2017 版《考研英语大纲词汇》乱序版　·　音标为标准美式 IPA　·　进度保存在本机浏览器</footer>
 
 <script>window.KY_DATA = [13,1099,1190,92,[12,10,6],[[1099,"affair","əˈfɛr",[["pl.","事务","事情(件)","(个人的)事"]]],[1100,"consistent","kənˈsɪstənt",[["adj.","(in)前后一致的","（with）一致，符合"]]],[1101,"verge","vərʤ",[["n.","边,边缘"],["v.","濒临"]]],[1102,"refuge","ˈrɛfjuʤ",[["n.","避难处,藏身处"]]],[1103,"orderly","ˈɔrdərli",[["adj.","整齐的,有秩序的,有条理的"],["n.","勤务兵"]]],[1104,"spell","spɛl",[["v.","拼写"]]],[1105,"cause","kɔz",[["n.","原因","事业,事件,奋斗目标"],["v.","使产生,引起"]]],[1106,"billion","ˈbɪljən",[["num./n.","(美)十亿,(英)万亿"]]],[1107,"fragrant","ˈfreɪgrənt",[["adj.","香的","芬芳的"]]],[1108,"grab","græb",[["v./n.","(at)抓(住)","夺(得)"]]],[1109,"prey","preɪ",[["n.","被掠食者,牺牲者,掠食"],["v.","捕食,掠夺,折磨"]]],[1110,"explicit","ɪkˈsplɪsət",[["adj.","详述的,明确的","坦率的","显然的"]]],[1111,"fitting","ˈfɪtɪŋ",[["adj.","适当的,恰当的"],["n.","(常"],["pl.",")配件,附件","装配"]]],[1112,"ground","graʊnd",[["n.","地，地面，土地","场地，场所","理由，根据"]]],[1113,"rap","ræp",[["n.","叩击,轻拍,斥责"],["v.","敲,拍,打,斥责,使着迷"]]],[1114,"downstairs","ˈdaʊnˈstɛrz",[["adv.","在楼下,往楼下"]]],[1115,"jazz","ʤæz",[["n.","爵士乐"]]],[1116,"mushroom","ˈməʃrum",[["n.","蘑菇"],["vt.","迅速生长,迅速增加,采蘑菇"]]],[1117,"multitude","ˈməltəˌtud",[["n.","众多,大量"]]],[1118,"site","saɪt",[["n.","位置,场所,地点"]]],[1119,"sequence","ˈsikwəns",[["n.","先后,次序","连续,数列"]]],[1120,"evade","ɪˈveɪd",[["vt.","逃避，回避","避开，躲避"]]],[1121,"paradigm","ˈpɛrəˌdaɪm",[["n.","典范","范例","示例"]]],[1122,"excessive","ɪkˈsɛsɪv",[["adj.","过多的","过分的","额外"]]],[1123,"stereo","ˈstɛriˌoʊ",[["n.","立体声音响","立体声装置"],["n./adj.","立体声(的)"]]],[1124,"extra","ˈɛkstrə",[["adj.","额外的,附加的"],["n.","附加物,额外的东西"]]],[1125,"cheque","ʧɛk",[["n.","(check)支票,空白支票","总收入"]]],[1126,"realise","ˈriəˌlaɪz",[["v.","(realize)认识到,体会到","实现"]]],[1127,"immigrant","ˈɪməgrənt",[["adj.","(从国外)移来的,移民的"],["n.","移民,侨民"]]],[1128,"rim","rɪm",[["n.","(圆物的)边,边缘","(眼镜)框"]]],[1129,"porter","ˈpɔrtər",[["n.","守门人,门房,行李搬运工,服务员"]]],[1130,"every","ˈɛvəri",[["adj.","每一个的，每个的","每隔…的","全部的"]]],[1131,"layoff","leɪɔf",[["n.","临时解雇,操作停止,活动停止期间,失业期"]]],[1132,"cable","ˈkeɪbəl",[["n.","电报","电缆","缆,索,钢丝绳"],["v.","拍电报"]]],[1133,"grain","greɪn",[["n.","谷物,谷类","颗粒,细粒"]]],[1134,"primitive","ˈprɪmɪtɪv",[["adj.","原始的,远古的,早期的","粗糙的,简单的"]]],[1135,"truck","trək",[["n.","卡车,载重汽车"]]],[1136,"over","ˈoʊvər",[["adv.","在上方","遍及地"],["prep.","在的上方"],["adj.","结束的"]]],[1137,"fraction","ˈfrækʃən",[["n.","碎片,小部分,一点儿","分数"]]],[1138,"steam","stim",[["n.","水汽,蒸汽,水蒸气"],["v.","蒸发","蒸","用蒸汽开动"]]],[1139,"marvelous","ˈmɑrvələs",[["adj.","(marvellous)惊人的,奇迹般的,妙极的"]]],[1140,"tremendous","trɪˈmɛndəs",[["adj.","巨大的,极大的"]]],[1141,"gauge","geɪʤ",[["n.","标准尺寸","规格","量规,量表"],["v.","测量"]]],[1142,"because","bɪˈkəz",[["conj.","因为，由于"]]],[1143,"light","laɪt",[["n.","光","灯"],["v.","点燃","照亮"],["adj.","轻(快)","淡","明亮"]]],[1144,"on","ɔn",[["adj.","连接上"],["prep.","在…上","靠近"],["adv.","向前，继续"]]],[1145,"ski","ski",[["n.","雪橇"],["v.","滑雪"]]],[1146,"return","rɪˈtərn",[["v./n.","返回,回来","归还,送还","回答"]]],[1147,"fleet","flit",[["n.","舰队,船队"]]],[1148,"instruct","ˌɪnˈstrəkt",[["v.","教,教授","命令,指示"]]],[1149,"jog","ʤɑg",[["v.","慢跑"]]],[1150,"controversy","ˈkɑntrəˌvərsi",[["n.","争论，辩论，争吵"]]],[1151,"peer","pɪr",[["n.","同辈,同等地位的人","贵族"],["v.","凝视,隐约出现"]]],[1152,"evidence","ˈɛvədəns",[["n.","明显","显著","根据","证据","迹象"]]],[1153,"curtain","ˈkərtən",[["n.","窗帘,门帘","幕(布)","结束","vt遮掩"]]],[1154,"earthquake","ˈərθkˌweɪk",[["n.","地震"]]],[1155,"interpret","ˌɪnˈtərprət",[["vt.","解释,说明","口译"]]],[1156,"youth","juθ",[["n.","青年","年轻人"]]],[1157,"judgement","ˈʤəʤmənt",[["n.","(judgment)审判,判决","判断(力)","看法,意见"]]],[1158,"gallop","ˈgæləp",[["v./n.","奔驰,飞奔"]]],[1159,"insult","ˌɪnˈsəlt",[["vt./n.","侮辱,凌辱"]]],[1160,"compensate","ˈkɑmpənˌseɪt",[["v.","(for)补偿,赔偿"]]],[1161,"apart","əˈpɑrt",[["adv.","分离，离开，隔开"],["adj.","分离的，分隔的"]]],[1162,"joy","ʤɔɪ",[["n.","欢乐,喜悦","乐事,乐趣"]]],[1163,"entitle","ɪnˈtaɪtəl",[["v.","给以权利(或资格)","给…称号(题名)","授权"]]],[1164,"bacterium","bækˈtɪriəm",[["pl.","bacteria 细菌"]]],[1165,"generate","ˈʤɛnərˌeɪt",[["vt.","产生,发生","生殖"]]],[1166,"underestimate","ˈəndərˈɛstəˌmeɪt",[["vt.","低估，看轻"]]],[1167,"continuous","kənˈtɪnjuəs",[["adj.","连续的,持续的"]]],[1168,"grade","greɪd",[["n.","等级,级别","年级","分数"],["v.","分等,分级"]]],[1169,"easy","ˈizi",[["adj.","容易的，不费力的，安逸的，宽裕的"]]],[1170,"sleeve","sliv",[["n.","袖子"]]],[1171,"very","ˈvɛri",[["adv.","很，非常","完全"],["adj.","正是的","真正，真实的"]]],[1172,"commonplace","ˈkɑmənˌpleɪs",[["adj.","普通的，平庸的"],["n.","寻常事物，平庸的东西"]]],[1173,"obstruct","əbˈstrəkt",[["v.","阻隔,阻塞(道路、通道等)"],["n.","阻碍物,障碍物"]]],[1174,"activate","ˈæktəˌveɪt",[["vt.","启动，激活","驱动，驱使","使开始起作用"]]],[1175,"pension","ˈpɛnʃən",[["n.","养老金,年金"]]],[1176,"train","treɪn",[["n.","列车","行列,系列,一串"],["v.","训练,培养"]]],[1177,"mutual","mˈjuʧuəl",[["adj.","相互的，彼此的","共同的，共有的"]]],[1178,"steal","stil",[["v.","偷,窃取","偷偷地做,巧取"]]],[1179,"audit","ˈɔdɪt",[["v.","审计","查帐","核对","旁听"]]],[1180,"garage","gərɑʒ",[["n.","车库,飞机库","修车厂"]]],[1181,"acid","ˈæsəd",[["n.","酸,酸性物质"],["adj.","酸的,酸味的","尖刻的"]]],[1182,"treason","ˈtrizən",[["n.","谋反,通敌,叛国"]]],[1183,"temptation","tɛmˈteɪʃən",[["n.","引诱，诱惑","诱惑物"]]],[1184,"tablet","ˈtæblət",[["n.","药片","碑,匾"]]],[1185,"storage","ˈstɔrɪʤ",[["n.","贮藏(量),保管","库房"]]],[1186,"resistance","rɪˈzɪstəns",[["n.","(to)抵抗,反抗","抵抗力,阻力","电阻"]]],[1187,"nickname","ˈnɪkˌneɪm",[["n.","绰号，浑名"],["vt.","给…起绰号"]]],[1188,"she","ʃi",[["pron.","(主格)她"]]],[1189,"pile","paɪl",[["n.","堆,大量,大数目"],["v.","(up)堆,叠,堆积"]]],[1190,"stubborn","ˈstəbərn",[["adj.","顽固的,倔强的","难对付的,难以克服的"]]]],[[12,1008,1098,91,1],[10,825,915,91,3],[6,459,549,91,7]]];</script>
-<script src="../assets/ky-core.js?v=20261107b"></script>
-<script src="../assets/ky-day.js?v=20261107b"></script>
+<script src="../assets/ky-core.js?v=20261109a"></script>
+<script src="../assets/ky-day.js?v=20261109a"></script>
 </body>
 </html>

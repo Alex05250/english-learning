@@ -21,43 +21,61 @@
       if (bar) bar.style.width = (100 * n / part.length).toFixed(0) + '%';
     });
     syncClear();
+    if (weakOnly) stat();
   }
 
   /* ── 词表 ── */
   const GROUP = 46;
-  let blurred = false, built = new Set();
+  let blurred = false, built = new Set(), weakOnly = false, savedOpen = null;
+
+  const groupEls = () => [].slice.call(document.querySelectorAll('#groups details.group'));
+  const groupOf = g => document.querySelector('#groups details.group[data-g="' + g + '"]');
+  const weakLeft = () => Math.max(0, ITEMS.length - W.countDay(DAY));
+
+  /* 只建/重建某一组的行：懒加载与「只看不熟」共用 */
+  function fillGroup(g) {
+    const el = groupOf(g);
+    if (!el || built.has(g)) return;
+    const set = W.daySet(DAY);
+    const all = ITEMS.slice(g * GROUP, g * GROUP + GROUP);
+    const part = weakOnly ? all.filter(it => !set.has(it[1])) : all;
+    el.querySelector('[data-host]').innerHTML =
+      part.map((it, i) => W.rowHtml(DAY, it, i, { blur: blurred })).join('');
+    built.add(g);
+  }
 
   function buildGroups() {
     const host = $('#groups');
+    const set = W.daySet(DAY);
+    built = new Set();
     const parts = [];
     for (let i = 0; i < ITEMS.length; i += GROUP) {
-      const g = i / GROUP;
-      const part = ITEMS.slice(i, i + GROUP);
-      const n = part.filter(x => W.daySet(DAY).has(x[1])).length;
-      const w = (100 * n / part.length).toFixed(0);
-      parts.push('<details class="group" data-g="' + g + '">'
+      const g = i / GROUP, all = ITEMS.slice(i, i + GROUP);
+      const left = all.filter(it => !set.has(it[1])).length;
+      if (weakOnly && !left) continue;                       // 过滤态：整组都熟了就不渲染
+      const n = all.length - left, w = (100 * n / all.length).toFixed(0);
+      parts.push('<details class="group" data-g="' + g + '"' + (weakOnly ? ' open' : '') + '>'
         + '<summary><span class="gname">第 ' + (g + 1) + ' 组</span>'
-        + '<span class="gmeta">' + n + '/' + part.length + ' 已会</span>'
+        + '<span class="gmeta">' + n + '/' + all.length + ' 已会</span>'
         + '<span class="gbar"><i style="width:' + w + '%"></i></span>'
         + '<span class="chev">▶</span></summary>'
         + '<div class="rows" style="padding:0" data-host="' + g + '"></div>'
         + '</details>');
     }
     host.innerHTML = parts.join('');
-    host.querySelectorAll('details.group').forEach(el => {
-      el.addEventListener('toggle', () => {
-        if (!el.open) return;
-        const g = +el.dataset.g;
-        if (built.has(g)) return;
-        const part = ITEMS.slice(g * GROUP, g * GROUP + GROUP);
-        el.querySelector('[data-host]').innerHTML =
-          part.map((it, i) => W.rowHtml(DAY, it, i, { blur: blurred })).join('');
-        built.add(g);
-      });
+    groupEls().forEach(el => {
+      el.addEventListener('toggle', () => { if (el.open) fillGroup(+el.dataset.g); });
     });
-    // 默认展开第一组
-    host.querySelector('details.group').open = true;
-    host.querySelector('details.group').dispatchEvent(new Event('toggle'));
+    if (weakOnly) {
+      groupEls().forEach(el => fillGroup(+el.dataset.g));     // 过滤态全部展开，省一次点击
+    } else if (savedOpen) {
+      savedOpen.forEach(([g, open]) => { const el = groupOf(g); if (el) el.open = open; });
+      savedOpen = null;
+    } else {
+      const first = groupEls()[0];
+      if (first) { first.open = true; fillGroup(+first.dataset.g); }
+    }
+    setEmpty();
   }
 
   $('#blurBtn').onclick = () => {
@@ -68,6 +86,89 @@
       r.classList.remove('show');
     });
   };
+
+  /* ── 只看不熟：过滤词表，只留未打勾的词 ── */
+  const filtBtn = $('#filtBtn');
+  const fstat = $('#fstat');
+  let swapT = 0;
+
+  function stat() {
+    const b = fstat && fstat.querySelector('b');
+    if (b) b.textContent = weakLeft();
+  }
+
+  function setEmpty() {
+    $('#fempty').hidden = !(weakOnly && weakLeft() === 0);
+  }
+
+  /* 整段列表先淡出、重建后再淡入，避免切换过滤时内容硬跳 */
+  function swapList() {
+    const host = $('#groups');
+    clearTimeout(swapT);
+    if (W.reduce) { buildGroups(); refresh(true); return; }
+    host.classList.add('swapping');
+    swapT = setTimeout(() => {
+      buildGroups();
+      refresh(true);
+      swapT = setTimeout(() => host.classList.remove('swapping'), 40);
+    }, 170);
+  }
+
+  filtBtn.onclick = () => {
+    weakOnly = !weakOnly;
+    filtBtn.setAttribute('aria-pressed', String(weakOnly));
+    fstat.classList.toggle('on', weakOnly);
+    if (weakOnly) savedOpen = groupEls().map(el => [+el.dataset.g, el.open]);
+    stat();
+    swapList();
+  };
+  $('#feOff').onclick = () => filtBtn.click();
+
+  /* 过滤态下打勾：该行淡出收合，所在组空了整组收合 */
+  function dropRow(row, word) {
+    const grp = row.closest('details.group');
+    const g = grp ? +grp.dataset.g : -1;
+    const finish = () => {
+      row.remove();
+      const el = groupOf(g);
+      if (el && !el.querySelector('.wrow')) dropGroup(el);
+      setEmpty();
+    };
+    if (W.reduce) {
+      finish();
+    } else {
+      row.style.animation = 'none';
+      row.style.height = row.offsetHeight + 'px';
+      row.style.overflow = 'hidden';
+      row.style.pointerEvents = 'none';   // 收合途中不再接受点击，避免同一行被连续切换
+      row.classList.add('is-collapsing');
+      void row.offsetHeight;
+      requestAnimationFrame(() => {
+        row.style.height = '0px';
+        row.style.paddingTop = '0px';
+        row.style.paddingBottom = '0px';
+        row.classList.add('is-gone');
+      });
+      setTimeout(finish, 340);
+    }
+    toast('「' + word + '」已标为已会', '撤销', () => {
+      W.toggle(DAY, word, false);
+      swapList();
+    });
+  }
+
+  function dropGroup(el) {
+    if (W.reduce) { el.remove(); return; }
+    el.style.height = el.offsetHeight + 'px';
+    el.style.overflow = 'hidden';
+    el.classList.add('is-collapsing');
+    void el.offsetHeight;
+    requestAnimationFrame(() => {
+      el.style.height = '0px';
+      el.classList.add('is-gone');
+    });
+    setTimeout(() => el.remove(), 340);
+  }
 
   /* ── 清空本页打勾（带回撤销）── */
   const clearBtn = $('#clearBtn');
@@ -101,15 +202,20 @@
     });
   }
 
+  /* 过滤态下批量改动 = 列表内容整体变化，直接重建；否则只刷打勾态 */
+  function afterBulk() {
+    if (weakOnly) buildGroups(); else paintTicks();
+  }
+
   clearBtn.onclick = () => {
     const had = W.clearDay(DAY);
     if (!had.length) return;
-    paintTicks();
+    afterBulk();
     flash.reset();
     refresh(true);
     toast('已清空本页 ' + had.length + ' 个勾', '撤销', () => {
       W.addWords(DAY, had);
-      paintTicks();
+      afterBulk();
       flash.reset();
       refresh(true);
     });
@@ -117,9 +223,11 @@
 
   document.addEventListener('click', e => {
     const b = e.target.closest('.mark'); if (!b) return;
+    const row = b.closest('.wrow');
     const on = W.toggle(DAY, b.dataset.w);
-    b.closest('.wrow').classList.toggle('done', on);
+    row.classList.toggle('done', on);
     refresh(true);
+    if (weakOnly && on) dropRow(row, b.dataset.w);
   });
   document.addEventListener('click', e => {
     const r = e.target.closest('.wrow.hide');
@@ -304,6 +412,7 @@
       Object.keys(panels).forEach(k => panels[k].classList.toggle('on', k === b.dataset.t));
       if (b.dataset.t === 'card') flash.redraw();
       if (b.dataset.t === 'quiz' && !qs.length) buildQuiz();
+      if (b.dataset.t === 'list' && weakOnly) buildGroups();
       scrollTo({ top: 0, behavior: 'smooth' });
     };
   });

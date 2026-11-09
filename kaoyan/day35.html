@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Day 35 · No.3113–3204 · 考研大纲词汇</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231d1d1f'/%3E%3Ctext x='32' y='44' font-size='30' font-weight='700' font-family='Segoe UI,Arial,sans-serif' text-anchor='middle' fill='%23fff'%3E研%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="../assets/base.css?v=20261107b">
-<link rel="stylesheet" href="../assets/app.css?v=20261107b">
-<link rel="stylesheet" href="../assets/ky.css?v=20261107b">
+<link rel="stylesheet" href="../assets/base.css?v=20261109a">
+<link rel="stylesheet" href="../assets/app.css?v=20261109a">
+<link rel="stylesheet" href="../assets/ky.css?v=20261109a">
 </head>
 <body>
 
@@ -43,10 +43,20 @@
 <section class="view on" id="p-list">
   <div class="rows">
     <div class="listbar">
+      <span class="fstat" id="fstat"><span>只看不熟 · 还剩</span><b>0</b><span>个</span></span>
+      <button class="pill filt" id="filtBtn" type="button" aria-pressed="false" title="只显示还没打勾的单词">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-6.2 10-6.2S22 12 22 12s-3.8 6.2-10 6.2S2 12 2 12Z"/><circle cx="12" cy="12" r="2.7"/></svg><span>只看不熟</span>
+      </button>
       <button class="pill danger" id="clearBtn" type="button" title="清空本页全部打勾，清空后可撤销" disabled>全部取消打勾</button>
       <button class="pill" id="blurBtn" type="button">遮住释义</button>
     </div>
     <div id="groups"></div>
+    <div class="fempty" id="fempty" hidden>
+      <div class="feic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.9l4.9 4.9L19.6 6.9"/></svg></div>
+      <p class="fet">这一天全部打勾了</p>
+      <p class="fes">92 个词都已标为已会，没有待巩固的不熟词。</p>
+      <button class="pill primary" id="feOff" type="button">看全部词</button>
+    </div>
   </div>
 </section>
 
@@ -102,7 +112,7 @@
 <footer>2017 版《考研英语大纲词汇》乱序版　·　音标为标准美式 IPA　·　进度保存在本机浏览器</footer>
 
 <script>window.KY_DATA = [35,3113,3204,92,[34,32,28,20],[[3113,"closet","ˈklɑzət",[["n.","(壁)橱"],["adj.","私下的"],["vt.","把…引进密室会谈"]]],[3114,"understand","ˌəndərˈstænd",[["v.","懂,理解","获悉,听说","揣测,认为"]]],[3115,"twice","twaɪs",[["adv.","两次,两倍"]]],[3116,"them","ðɛm",[["pron.","他们/她们/它们(they的宾格形式)"]]],[3117,"pleasant","ˈplɛzənt",[["adj.","令人愉快的"],["vt.","使高兴"],["vi.","满意","喜欢"]]],[3118,"tentative","ˈtɛntətɪv",[["adj.","试探性的，暂时的","犹豫不决的"]]],[3119,"prison","ˈprɪzən",[["n.","监狱"]]],[3120,"accident","ˈæksədənt",[["n.","意外遭遇,事故","意外(因素)"]]],[3121,"doze","doʊz",[["v./n.","瞌睡","假寐"]]],[3122,"radioactive","ˌreɪdioʊˈæktɪv",[["adj.","放射性,放射引起的"]]],[3123,"collect","kəˈlɛkt",[["v.","收集,搜集","领取,接走","收(税等)","聚集,堆积"]]],[3124,"sustain","səˈsteɪn",[["vt.","支撑,撑住","维持,持续,经受,忍耐"]]],[3125,"hurricane","ˈhərəˌkeɪnz",[["n.","飓风"]]],[3126,"integrity","ˌɪnˈtɛgrəti",[["n.","正直,诚实","完整,完全"]]],[3127,"glorious","ˈglɔriəs",[["adj.","壮丽的,辉煌的","光荣的"]]],[3128,"university","ˌjunəˈvərsəti",[["n.","(综合)大学"]]],[3129,"back","bæk",[["adj.","后面的"],["adv.","向后"],["v.","倒退","支持"],["n.","背","后面"]]],[3130,"lung","ləŋ",[["n.","肺"]]],[3131,"means","minz",[["n.","方法,手段"]]],[3132,"eject","ɪˈʤɛkt",[["v.","喷射,排出","驱逐"]]],[3133,"scenery","ˈsinəri",[["n.","风景,舞台布景"]]],[3134,"partly","ˈpɑrtli",[["adv.","部分地,不完全地,在一定程度上"]]],[3135,"grocer","ˈgroʊsər",[["n.","食品商,杂货商"]]],[3136,"vegetable","ˈvɛʤtəbəl",[["n.","蔬菜,植物"],["adj.","植物的,蔬菜的"]]],[3137,"pair","pɛr",[["n.","一对,一双","一副","夫妇"],["v.","配对,成对"]]],[3138,"physics","ˈfɪzɪks",[["n.","物理(学)"]]],[3139,"impossible","ˌɪmˈpɑsəbəl",[["adj.","不可能的","难以忍受的，很难对付的"]]],[3140,"thorough","θəroʊ",[["adj.","彻底的,完全的","精心的"]]],[3141,"latitude","ˈlætəˌtud",[["n.","纬度,行动或言论的自由(范围)"],["pl.","地区"]]],[3142,"myth","mɪθ",[["n.","神话","虚构的理论"]]],[3143,"sideways","ˈsaɪdˌweɪz",[["adv./adj.","向旁边(的),侧身,横着(的),斜着(的)"]]],[3144,"adventure","ədˈvɛnʧər",[["n.","冒险，冒险活动，奇遇"],["vt.","大胆进行"]]],[3145,"intersection","ˌɪntərˈsɛkʃən",[["n.","相交，交叉","道路交叉口，十字路口"]]],[3146,"store","stɔr",[["n.","商店,店铺","贮藏,贮备品"],["v.","贮藏,贮备"]]],[3147,"deposit","dɪˈpɑzət",[["v.","存放","使沉淀","付(保证金)"],["n.","存款","沉积物"]]],[3148,"go","goʊ",[["v.","去，离开","走","放置","变成","运转"],["n.","围棋"]]],[3149,"despatch","diˈspætʃ",[["n./v.","(dispatch)派遣","发送"],["n.","急件","新闻报道"]]],[3150,"little","ˈlɪtəl",[["adj.","小，幼小","不多的"],["adv./n.","不多，几乎没有"]]],[3151,"inward","ˈɪnwərd",[["adv.","向内,在内"],["adj.","向内的,在内的,里面的"]]],[3152,"wet","wɛt",[["adj.","湿的,潮湿的","有雨的,多雨的"],["v.","弄湿,沾湿"]]],[3153,"hospitality","ˌhɑspəˈtæləti",[["n.","好客,殷勤,款待"]]],[3154,"allocate","ˈæləˌkeɪt",[["v.","分配，分派","拨给","划归"]]],[3155,"spiritual","ˈspɪrɪˌʧuəl",[["adj.","精神(上)的,心灵的"]]],[3156,"nightmare","ˈnaɪtˌmɛr",[["n.","恶梦","可怕的事物，无法摆脱的恐惧"]]],[3157,"prevalent","ˈprɛvələnt",[["adj.","流行的,普遍的"]]],[3158,"manufacture","ˌmænjəˈfækʧər",[["v.","制造,加工"],["n.","制造,制造业","产品"]]],[3159,"transfer","ˈtrænsfər",[["vt./n.","转移","转换","转让","过户","迁移","改乘"]]],[3160,"bankrupt","ˈbæŋkrəpt",[["adj.","破产的","彻底缺乏的"],["vt.","使破产"],["n.","破产者"]]],[3161,"testimony","ˈtɛstɪˌmoʊni",[["n.","证据,证词","表明,说明"]]],[3162,"withdraw","wɪθˈdrɔ",[["v.","收回,撤消","缩回,退出","提取(钱)"]]],[3163,"east","ist",[["n.","东,东方,东部"],["adj.","东方的,东部的"]]],[3164,"consent","kənˈsɛnt",[["v./n.","(to)同意,赞成,答应"]]],[3165,"who","hu",[["pron.","谁，什么人","…的人","他，她，他们"]]],[3166,"raw","rɑ",[["adj.","未煮过的,生的","未加工过的,未经训练的"]]],[3167,"guarantee","ˌgɛrənˈti",[["n.","保证,保证书"],["v.","保证,担保"]]],[3168,"indignation","ˌɪndɪgˈneɪʃən",[["n.","愤怒,愤慨"]]],[3169,"chess","ʧɛs",[["n.","棋，国际象棋"]]],[3170,"benign","bɪˈnaɪn",[["adj.","(病)良性的,(气候)良好的,仁慈的,和蔼的"]]],[3171,"shade","ʃeɪd",[["n.","荫,阴影","遮光物,罩"],["v.","遮蔽,遮光"]]],[3172,"ballot","ˈbælət",[["n.","(不记名)投票","投票总数","投票权"],["vi.","投票"]]],[3173,"pen","pɛn",[["n.","钢笔,圆珠笔,作家,围栏"],["vt.","写,关入栏中"]]],[3174,"understanding","ˌəndərˈstændɪŋ",[["n.","理解,理解力","谅解"],["adj.","了解的,通情达理的"]]],[3175,"teacher","ˈtiʧər",[["n.","教师(员)，老(导)师"]]],[3176,"fetch","fɛʧ",[["v.","取来","接来","引出","售得","吸引"],["n.","取得","拿"]]],[3177,"whistle","ˈwɪsəl",[["n.","口哨,汽笛","口哨声,汽笛声"],["v.","吹口哨","鸣笛"]]],[3178,"flush","fləʃ",[["n.","脸红"],["v.","发红","奔流"],["adj.","洋溢的","富裕的","齐平的"]]],[3179,"legal","ˈligəl",[["adj.","法律的,法定的","合法的,正当的"]]],[3180,"submerge","səbˈmərʤ",[["v.","沉没,淹没","潜入"]]],[3181,"homogeneous","ˌhoʊməˈʤiniəs",[["adj.","同种类的，同性质的，有相同特征的"]]],[3182,"autonomy","əˈtɑnəmi",[["n.","自治，自治权"]]],[3183,"today","təˈdeɪ",[["adv.","在今天","现今，在当代"],["n.","今天","现在"]]],[3184,"criticism","ˈkrɪtɪˌsɪzəm",[["n.","评论性的文章，评论","批评，指责，非难"]]],[3185,"accent","ˈækˌsɛnt",[["n.","口音,腔调","重音(符号)"],["vt.","重读"]]],[3186,"beside","ˌbiˈsaɪd",[["prep.","在...旁边，在...附近","和...相比"]]],[3187,"employer","ɪmˈplɔɪər",[["n.","雇主"]]],[3188,"out","aʊt",[["adv.","出去","离家","突出来"],["adj.","外面的，往外去的"]]],[3189,"successive","səkˈsɛsɪv",[["adj.","接连的,连续的"]]],[3190,"loose","lus",[["adj.","(宽)松的","不精确的","自由的，散漫的"]]],[3191,"telephone","ˈtɛləˌfoʊn",[["n.","电话,电话机"],["v.","打电话"]]],[3192,"withstand","wɪθˈstænd",[["vt.","抵抗,经受住"]]],[3193,"reel","ril",[["n.","卷筒,线轴"],["v.","卷,绕"]]],[3194,"prominent","ˈprɑmənənt",[["adj.","突起的,凸出的","突出的,杰出的"]]],[3195,"thermometer","θərˈmɑmətər",[["n.","温度计"]]],[3196,"matter","ˈmætər",[["n.","物质,物体","毛病,麻烦","事情"],["v.","有关系,要紧"]]],[3197,"some","səm",[["adj.","几个","一些","有些","某(人或物)"],["pron.","一些"]]],[3198,"must","məst",[["v.","必须","很可能","一定要"],["n.","必须做的事"]]],[3199,"retain","rɪˈteɪn",[["v.","保持,保留"]]],[3200,"doctorate","ˈdɑktərət",[["n.","博士学位","博士头衔"]]],[3201,"possess","pəˈzɛs",[["v.","占有,拥有"]]],[3202,"cancer","ˈkænsər",[["n.","癌"]]],[3203,"breast","brɛst",[["n.","胸膛,乳房"]]],[3204,"spine","spaɪn",[["n.","脊柱，脊椎","(动植物的)刺","书脊"]]]],[[34,3022,3112,91,1],[32,2839,2929,91,3],[28,2472,2563,92,7],[20,1740,1831,92,15]]];</script>
-<script src="../assets/ky-core.js?v=20261107b"></script>
-<script src="../assets/ky-day.js?v=20261107b"></script>
+<script src="../assets/ky-core.js?v=20261109a"></script>
+<script src="../assets/ky-day.js?v=20261109a"></script>
 </body>
 </html>

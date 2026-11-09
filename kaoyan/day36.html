@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Day 36 · No.3205–3295 · 考研大纲词汇</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231d1d1f'/%3E%3Ctext x='32' y='44' font-size='30' font-weight='700' font-family='Segoe UI,Arial,sans-serif' text-anchor='middle' fill='%23fff'%3E研%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="../assets/base.css?v=20261107b">
-<link rel="stylesheet" href="../assets/app.css?v=20261107b">
-<link rel="stylesheet" href="../assets/ky.css?v=20261107b">
+<link rel="stylesheet" href="../assets/base.css?v=20261109a">
+<link rel="stylesheet" href="../assets/app.css?v=20261109a">
+<link rel="stylesheet" href="../assets/ky.css?v=20261109a">
 </head>
 <body>
 
@@ -43,10 +43,20 @@
 <section class="view on" id="p-list">
   <div class="rows">
     <div class="listbar">
+      <span class="fstat" id="fstat"><span>只看不熟 · 还剩</span><b>0</b><span>个</span></span>
+      <button class="pill filt" id="filtBtn" type="button" aria-pressed="false" title="只显示还没打勾的单词">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-6.2 10-6.2S22 12 22 12s-3.8 6.2-10 6.2S2 12 2 12Z"/><circle cx="12" cy="12" r="2.7"/></svg><span>只看不熟</span>
+      </button>
       <button class="pill danger" id="clearBtn" type="button" title="清空本页全部打勾，清空后可撤销" disabled>全部取消打勾</button>
       <button class="pill" id="blurBtn" type="button">遮住释义</button>
     </div>
     <div id="groups"></div>
+    <div class="fempty" id="fempty" hidden>
+      <div class="feic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.9l4.9 4.9L19.6 6.9"/></svg></div>
+      <p class="fet">这一天全部打勾了</p>
+      <p class="fes">91 个词都已标为已会，没有待巩固的不熟词。</p>
+      <button class="pill primary" id="feOff" type="button">看全部词</button>
+    </div>
   </div>
 </section>
 
@@ -102,7 +112,7 @@
 <footer>2017 版《考研英语大纲词汇》乱序版　·　音标为标准美式 IPA　·　进度保存在本机浏览器</footer>
 
 <script>window.KY_DATA = [36,3205,3295,91,[35,33,29,21],[[3205,"tin","tɪn",[["n.","罐头","锡"],["adj.","锡制的"],["vt.","镀锡于"]]],[3206,"design","dɪˈzaɪn",[["v.","设计","构思","绘制","图案","企图"],["n.","设计,图样"]]],[3207,"snake","sneɪk",[["n.","蛇"]]],[3208,"structure","ˈstrəkʧər",[["n.","结构,构造","建筑物"],["v.","构造,建造"]]],[3209,"symmetry","ˈsɪmətri",[["n.","对称(性)","匀称,整齐"]]],[3210,"ending","ˈɛndɪŋ",[["n.","结尾,结局"]]],[3211,"noble","ˈnoʊbəl",[["adj.","高尚的","贵族的,高贵的"],["n.","贵族"]]],[3212,"spend","spɛnd",[["v.","花费","消耗,用尽","度过,消磨"]]],[3213,"acclaim","əˈkleɪm",[["v.","向…欢呼，公认"],["n.","欢呼，喝彩，称赞"]]],[3214,"tan","tæn",[["n./adj.","(皮肤因日晒而成)棕褐色(的)"],["vt.","晒黑"]]],[3215,"father","ˈfɑðər",[["n.","父亲","创始人，发明者","(Father)神父"]]],[3216,"aggressive","əˈgrɛsɪv",[["adj.","好斗的，有进取心的，敢作敢为的"]]],[3217,"contradiction","ˌkɑntrəˈdɪkʃən",[["n.","反驳，否认","矛盾，不一致"]]],[3218,"biology","baɪˈɑləʤi",[["n.","生物学"]]],[3219,"collar","ˈkɑlər",[["n.","衣领","环状物"]]],[3220,"mortgage","ˈmɔrgɪʤ",[["n./v.","抵押(借款)"]]],[3221,"internal","ˌɪnˈtərnəl",[["adj.","内部的,内的","国内的,内政的"]]],[3222,"word","wərd",[["n.","词，词语","言语，话","谈话","消息，信息"]]],[3223,"struggle","ˈstrəgəl",[["n./v.","斗争,奋斗,努力"]]],[3224,"pea","pi",[["n.","豌豆"]]],[3225,"almost","ˈɔlˌmoʊst",[["adv.","几乎，差不多"]]],[3226,"even","ˈivɪn",[["adv.","甚至(更)"],["adj.","均匀的","平的","相等的","偶数的"]]],[3227,"strategy","ˈstrætəʤi",[["n.","战略，策略","对策，政策"]]],[3228,"breath","brɛθ",[["n.","呼吸,气息"]]],[3229,"help","hɛlp",[["v.","帮(援)助","有助于","[呼救]救命"],["n.","帮助(手)"]]],[3230,"hint","hɪnt",[["n.","暗示,提示,线索"],["v.","暗示,示意"]]],[3231,"shower","ʃaʊər",[["n.","阵雨","沐浴","(一)阵/大批"],["v.","下阵雨,倾注"]]],[3232,"revenge","riˈvɛnʤ",[["n.","报复,复仇"],["v.","替…报仇"]]],[3233,"hearing","ˈhirɪŋ",[["n.","听,倾听","听力","审讯"]]],[3234,"squeeze","skwiz",[["v.","压榨,挤"],["n.","榨取,勒索"]]],[3235,"petition","pəˈtɪʃən",[["n.","请愿书,申请书"],["v.","(向…)请愿,正式请求"]]],[3236,"capital","ˈkæpɪtəl",[["n.","首都","大写字母","资本"],["adj.","主要的,大写字母的"]]],[3237,"world","wərld",[["n.","世界，地球","…界，领域","世间","全世界"]]],[3238,"harassment","hərˈæsmənt",[["n.","骚扰，扰乱","烦恼，烦乱"]]],[3239,"reservoir","ˈrɛzəvˌwɑr",[["n.","水库,蓄水池"]]],[3240,"disable","dɪˈseɪbəl",[["vt.","使残废","使失去能力","丧失能力"]]],[3241,"calcium","ˈkælsiəm",[["n.","钙(化学符号Ca)"]]],[3242,"rational","ˈræʃənəl",[["adj.","理性的,合理的"]]],[3243,"ferry","ˈfɛri",[["n.","摆渡","渡船","渡口"],["v.","摆渡","渡运(人,车或物等)"]]],[3244,"disturbance","dɪˈstərbəns",[["n.","动乱,骚乱,干扰"]]],[3245,"cup","kəp",[["n.","杯","奖杯，优胜杯","(一)杯，一杯的容量"]]],[3246,"her","hər",[["pron.","she的宾格]她","[she的所有格]她的"]]],[3247,"link","lɪŋk",[["v.","连接,联系"],["n.","环节,链环"]]],[3248,"definite","ˈdɛfənət",[["adj.","明确的","一定的","意志坚强的,立场坚定的"]]],[3249,"waterproof","ˈwɔtərˌpruf",[["adj.","防水的,耐水的"]]],[3250,"hemisphere","ˈhɛmɪsˌfɪr",[["n.","半球"]]],[3251,"concrete","ˈkɑnkrit",[["adj.","具体的,实质性的"],["n.","混凝土"],["v.","用混凝土修筑"]]],[3252,"disguise","dɪsˈgaɪz",[["n./v.","假装,伪装"]]],[3253,"cheat","ʧit",[["v.","欺骗","作弊"],["n.","骗子","欺诈,欺骗行为"]]],[3254,"produce","ˈproʊdus",[["v.","生产,制造,显示,演出,导致"],["n.","产品"]]],[3255,"package","ˈpækɪʤ",[["n.","包装,包裹,箱,包装费,标准部件,成套设备"]]],[3256,"regarding","rɪˈgɑrdɪŋ",[["prep.","关于,有关"]]],[3257,"nice","nis",[["adj.","美好的，令人愉快的","友好的，亲切的"]]],[3258,"maths","mæθs",[["n.","(mathematics/math)数学"]]],[3259,"effective","ˈifɛktɪv",[["adj.","有效的,生效的","被实施的","给人深刻印象"]]],[3260,"shear","ʃɪr",[["v.","剪,修剪"]]],[3261,"scratch","skræʧ",[["v.","抓,搔,扒"],["n.","抓,搔,抓痕","起跑线"]]],[3262,"accidental","ˌæksəˈdɛnəl",[["adj.","偶然的","意外的","无意中的"]]],[3263,"undergo","ˌəndərˈgoʊ",[["vt.","遭受,经历,承受"]]],[3264,"chicken","ˈʧɪkən",[["n.","鸡肉","鸡，小鸡，小鸟"]]],[3265,"resultant","riˈzəltənt",[["adj.","作为结果而发生的","合成的"]]],[3266,"marriage","ˈmɛrɪʤ",[["n.","结婚,婚姻","结婚仪式"]]],[3267,"curse","kərs",[["n.","诅咒,咒语,祸因"],["vt.","诅咒,咒骂,使受罪"]]],[3268,"chip","ʧɪp",[["n.","切屑,碎片","(土豆等的)薄片","集成电路块"]]],[3269,"slap","slæp",[["n./v.","拍,掌击"]]],[3270,"corporation","ˌkɔrpərˈeɪʃən",[["n.","市镇自治机关","法人","公司，企业"]]],[3271,"gear","gɪr",[["n.","齿轮,传动装置"],["v.","(to)调整,使适合"]]],[3272,"perplex","pərˈplɛks",[["v.","使困惑,使费解,使复杂化"]]],[3273,"lace","leɪs",[["n.","花边","带子,鞋带"],["v.","系带,扎带"]]],[3274,"irrigate","ˈɪrəˌgeɪt",[["vt.","灌溉，修水利"],["vi.","进行灌溉"]]],[3275,"lawyer","ˈlɔjər",[["n.","律师"]]],[3276,"liable","ˈlaɪəbəl",[["adj.","有...倾向的","可能遭受...的","有责任的"]]],[3277,"league","lig",[["n.","同盟,联盟","联合会,社团"]]],[3278,"accumulate","əˈkjumjəˌleɪt",[["vt.","堆积，积累，积聚"],["vi.","累积，聚积"]]],[3279,"leaflet","ˈliflət",[["n.","小叶,嫩叶","传单,活页"]]],[3280,"input","ˈɪnˌpʊt",[["n./v.","输入"]]],[3281,"source","sɔrs",[["n.","源,源泉","来源,出处"]]],[3282,"prove","pruv",[["v.","证明,证实","检验","考验","鉴定","结果是,表明是"]]],[3283,"trust","trəst",[["vt.","信任","盼望","委托"],["n.","(in)信任,依赖","委托"]]],[3284,"steamer","ˈstimər",[["n.","汽船,轮船"]]],[3285,"instantaneous","ˌɪnstənˈtæniəs",[["adj.","瞬间的,即刻的"]]],[3286,"bureau","ˈbjʊroʊ",[["n.","署,局,司,处"]]],[3287,"wink","wɪŋk",[["v.","(使)眨眼","眨眼示意"],["n.","眨眼","小睡，打盹"]]],[3288,"signature","ˈsɪgnəʧər",[["n.","签名,署名,签字"]]],[3289,"vein","veɪn",[["n.","血管","静脉","叶脉","纹理","情绪"],["vt.","使成脉络"]]],[3290,"exit","ˈɛksət",[["n.","出口,通道"]]],[3291,"orchestra","ˈɔrkəstrə",[["n.","管弦乐队"]]],[3292,"round","raʊnd",[["adj.","圆的"],["prep.","围绕"],["adv.","在周围"],["v.","绕行"],["n.","1回合"]]],[3293,"yearly","ˈjɪrli",[["adj.","每年的，一年一度的"],["adv.","每年，一年一次地"]]],[3294,"laser","ˈleɪzər",[["n.","激光"]]],[3295,"fate","feɪt",[["n.","命运"]]]],[[35,3113,3204,92,1],[33,2930,3021,92,3],[29,2564,2654,91,7],[21,1832,1922,91,15]]];</script>
-<script src="../assets/ky-core.js?v=20261107b"></script>
-<script src="../assets/ky-day.js?v=20261107b"></script>
+<script src="../assets/ky-core.js?v=20261109a"></script>
+<script src="../assets/ky-day.js?v=20261109a"></script>
 </body>
 </html>

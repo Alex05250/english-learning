@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Day 45 · No.4028–4119 · 考研大纲词汇</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231d1d1f'/%3E%3Ctext x='32' y='44' font-size='30' font-weight='700' font-family='Segoe UI,Arial,sans-serif' text-anchor='middle' fill='%23fff'%3E研%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="../assets/base.css?v=20261107b">
-<link rel="stylesheet" href="../assets/app.css?v=20261107b">
-<link rel="stylesheet" href="../assets/ky.css?v=20261107b">
+<link rel="stylesheet" href="../assets/base.css?v=20261109a">
+<link rel="stylesheet" href="../assets/app.css?v=20261109a">
+<link rel="stylesheet" href="../assets/ky.css?v=20261109a">
 </head>
 <body>
 
@@ -43,10 +43,20 @@
 <section class="view on" id="p-list">
   <div class="rows">
     <div class="listbar">
+      <span class="fstat" id="fstat"><span>只看不熟 · 还剩</span><b>0</b><span>个</span></span>
+      <button class="pill filt" id="filtBtn" type="button" aria-pressed="false" title="只显示还没打勾的单词">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-6.2 10-6.2S22 12 22 12s-3.8 6.2-10 6.2S2 12 2 12Z"/><circle cx="12" cy="12" r="2.7"/></svg><span>只看不熟</span>
+      </button>
       <button class="pill danger" id="clearBtn" type="button" title="清空本页全部打勾，清空后可撤销" disabled>全部取消打勾</button>
       <button class="pill" id="blurBtn" type="button">遮住释义</button>
     </div>
     <div id="groups"></div>
+    <div class="fempty" id="fempty" hidden>
+      <div class="feic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.9l4.9 4.9L19.6 6.9"/></svg></div>
+      <p class="fet">这一天全部打勾了</p>
+      <p class="fes">92 个词都已标为已会，没有待巩固的不熟词。</p>
+      <button class="pill primary" id="feOff" type="button">看全部词</button>
+    </div>
   </div>
 </section>
 
@@ -102,7 +112,7 @@
 <footer>2017 版《考研英语大纲词汇》乱序版　·　音标为标准美式 IPA　·　进度保存在本机浏览器</footer>
 
 <script>window.KY_DATA = [45,4028,4119,92,[44,42,38,30],[[4028,"mistake","mɪˈsteɪk",[["n.","错误,过失,误解"],["v.","弄错","(for)把…误认为"]]],[4029,"third","θərd",[["num.","第三(个)，三分之一(的)"]]],[4030,"surname","ˈsərˌneɪm",[["n.","姓"]]],[4031,"rope","roʊp",[["n.","绳,索"]]],[4032,"snatch","snæʧ",[["n./v.","攫取,抢夺"]]],[4033,"minimize","ˈmɪnəˌmaɪz",[["v.","(minimize)使减少到最少,使降到最低"]]],[4034,"independence","ˌɪndɪˈpɛndəns",[["n.","独立,自主"]]],[4035,"protect","prəˈtɛkt",[["v.","(from)保护,保卫"]]],[4036,"microscope","ˈmaɪkrəˌskoʊp",[["n.","显微镜"]]],[4037,"harness","ˈhɑrnɪs",[["v.","治理,利用"],["n.","马具,挽具"]]],[4038,"obsession","əbˈsɛʃən",[["n.","迷住, 困扰"]]],[4039,"freedom","ˈfridəm",[["n.","自由,自主,免除,特权"]]],[4040,"extraordinary","ˌɛkstrəˈɔrdəˌnɛri",[["adj.","非常的","格外的","意外的","离奇的","临时的"]]],[4041,"strap","stræp",[["n.","皮带"],["v.","用带扣住，束牢","用绷带包扎"]]],[4042,"communication","kəmˌjunəˈkeɪʃən",[["n.","通讯,传达"],["pl.","通讯系统","交通(工具)"]]],[4043,"dark","dɑrk",[["adj.","黑的，深(色)的","隐秘的"],["n.","无光，黑暗"]]],[4044,"erect","ɪˈrɛkt",[["v.","树立,建立,使竖立"],["adj.","直立的,垂直的"]]],[4045,"weird","wɪrd",[["adj.","古怪的，离奇的","怪诞的，神秘而可怕的"]]],[4046,"predict","prɪˈdɪkt",[["v.","预言,预测,预告"]]],[4047,"preceding","priˈsidɪŋ",[["adj.","在前的,在先的"]]],[4048,"forgive","fərˈgɪv",[["v.","原谅,饶恕"]]],[4049,"delivery","dɪˈlɪvəri",[["n.","递送","交付","分娩","交货","引渡"]]],[4050,"hand","hænd",[["n.","手，人手，雇员","专门业人员","指针"],["v.","交"]]],[4051,"rake","reɪk",[["n.","耙子,耙机"],["v.","耙","搜索,探索"]]],[4052,"diplomatic","ˌdɪpləˈmætɪk",[["adj.","外交的,从事外交的","策略的,有手腕的"]]],[4053,"apologise","əˈpɑləˌʤaɪz",[["v.","(to,for)道歉，认错"]]],[4054,"tumble","ˈtəmbəl",[["v.","(使)摔倒","打滚,翻腾"],["n.","摔跤,跌倒"]]],[4055,"or","ər",[["conj.","或，或者(表示选择)","即，大约","否则"]]],[4056,"mainland","ˈmeɪnˌlænd",[["n.","大陆,本土"]]],[4057,"young","jəŋ",[["adj.","年轻的，幼小的","没经验的"],["n.","青年人"]]],[4058,"grandmother","ˈgrændˌməðər",[["n.","祖母,外祖母"]]],[4059,"bonus","ˈboʊnəs",[["n.","奖金,红利"]]],[4060,"humanity","juˈmænɪti",[["n.","人类,人性,人情"],["pl.","人文科学"]]],[4061,"documentary","ˌdɑkjəˈmɛnəri",[["adj.","文献的"],["n.","记录片"]]],[4062,"hijack","ˈhaɪˌʤæk",[["v.","劫持，劫机，拦路抢劫"]]],[4063,"pressure","ˈprɛʃər",[["n.","压,压力,压迫,强制,紧迫,困苦,困难"]]],[4064,"skill","skɪl",[["n.","技能,技巧,手艺","熟练"]]],[4065,"infect","ˌɪnˈfɛkt",[["vt.","传染，感染","影响(思想等)"]]],[4066,"relax","rɪˈlæks",[["v.","(使)松驰,放松"]]],[4067,"ourselves","ɑrˈsɛlvz",[["pron.","反身代词，我们自己","我们亲自"]]],[4068,"fee","fi",[["n.","费(会费,学费等)","酬金"]]],[4069,"compromise","ˈkɑmprəˌmaɪz",[["n.","妥协，折衷"],["vi.","妥协"],["vt.","危及，放弃(原则等)"]]],[4070,"obligation","ˌɑbləˈgeɪʃən",[["n.","义务,责任"]]],[4071,"vegetation","ˌvɛʤəˈteɪʃən",[["n.","植物,草木"]]],[4072,"juvenile","ˈʤuvəˌnaɪl",[["n.","青少年,少年读物"],["adj.","青少年的, 幼稚的"]]],[4073,"snack","snæk",[["n.","快餐,小吃,点心"]]],[4074,"discovery","ˌdɪˈskəvri",[["n.","发现","被发现的事物"]]],[4075,"administration","ædˌmɪnɪˈstreɪʃən",[["n.","经营，管理","行政，行政机关，管理部门"]]],[4076,"bee","bi",[["n.","蜂，蜜蜂","忙碌的人"]]],[4077,"repetition","ˌrɛpəˈtɪʃən",[["n.","重复,反复"]]],[4078,"ornament","ˈɔrnəmənt",[["v.","装饰,美化"],["n.","装饰,装饰物"]]],[4079,"classify","ˈklæsəˌfaɪ",[["v.","分类,分等(级)"]]],[4080,"atmosphere","ˈætməsˌfɪr",[["n.","大气(层)","空气","气氛，环境","大气压"]]],[4081,"detect","dɪˈtɛkt",[["v.","察觉,发觉,侦察,探测"]]],[4082,"taxi","ˈtæksi",[["n.","出租汽车"],["v.","指飞机，(使)滑行"]]],[4083,"door","dɔr",[["n.","门","门口，出入口","门状物","家","通道"]]],[4084,"outstanding","ˌaʊtˈstændɪŋ",[["adj.","突出的,显著的,杰出的"]]],[4085,"album","ˈælbəm",[["n.","(同一表演者的)唱片","集邮册,相册"]]],[4086,"heritage","ˈhɛrɪtɪʤ",[["n.","遗产,继承物","传统"]]],[4087,"satellite","ˈsætəˌlaɪt",[["n.","卫星,人造卫星","附属物"]]],[4088,"carbohydrate","ˌkɑrboʊˈhaɪˌdreɪt",[["n.","碳水化合物","糖类","(plural)淀粉质或糖类"]]],[4089,"pond","pɑnd",[["n.","池塘"]]],[4090,"unique","juˈnik",[["adj.","唯一的,独一无二的"]]],[4091,"robe","roʊb",[["n.","长袍,上衣"]]],[4092,"anchor","ˈæŋkər",[["n./v.","锚","危难时可依靠的人或物","用锚泊船"]]],[4093,"sphere","sfɪr",[["n.","球,球体","范围,领域"]]],[4094,"church","ʧərʧ",[["n.","教堂","教会,教派","（宗教的）礼拜仪式"]]],[4095,"authority","əˈθɔrəti",[["n.","权力，权威","权威人士"],["pl.","官方，当局"]]],[4096,"startle","ˈstɑrtəl",[["v.","惊吓,使吃惊"]]],[4097,"psychiatry","sɪˈkaɪətri",[["n.","精神病学，精神病疗法"]]],[4098,"shore","ʃɔr",[["n.","海滨,湖滨"]]],[4099,"silent","ˈsaɪlənt",[["adj.","寂静,沉默的"]]],[4100,"irrespective","ˌɪrəˈspɛktɪv",[["adj.","不顾的,不考虑的,无关的"]]],[4101,"will","wɪl",[["aux.v.","将","会","愿意"],["n.","意志","决心","愿望"]]],[4102,"racial","ˈreɪʃəl",[["adj.","种的,种族的"]]],[4103,"March","mɑrʧ",[["n.","三月(略作 Mar.)"]]],[4104,"evaporate","ɪˈvæpərˌeɪt",[["v.","蒸发,挥发","沉淀","发射","消失"]]],[4105,"future","fˈjuʧər",[["n.","将来,未来","前途,前景"],["adj.","将来的,未来的"]]],[4106,"supervise","ˈsupərˌvaɪz",[["v.","管理,监督"]]],[4107,"follow","ˈfɑloʊ",[["v.","跟随,接着","领会","沿着…前进,遵循","结果是"]]],[4108,"april","ˈeɪprəl",[["","四月"]]],[4109,"regulate","ˈrɛgjəˌleɪt",[["v.","管制,控制","调节,校准","调整"]]],[4110,"topic","ˈtɑpɪk",[["n.","话题,主题,题目"]]],[4111,"vanish","ˈvænɪʃ",[["vi.","突然不见","消失"]]],[4112,"congratulate","kənˈgræʧəˌleɪt",[["v.","(on)祝贺,向…致贺词"]]],[4113,"border","ˈbɔrdər",[["n.","边界,国界","边(沿)"],["v.","交界,与…接壤","接近"]]],[4114,"smuggle","sˈməgəl",[["v.","走私","偷运"]]],[4115,"appointment","əˈpɔɪntmənt",[["n.","约会,约定","任命,委派","委任的职位"]]],[4116,"imitation","ˌɪməˈteɪʃən",[["n.","模仿,仿效","仿制","仿造品"]]],[4117,"dragon","ˈdrægən",[["n.","龙"]]],[4118,"super","ˈsupər",[["adj.","极好的,超级的"]]],[4119,"nothing","ˈnəθɪŋ",[["n.","没有东西","什么也没有","无关紧要的人或事"]]]],[[44,3937,4027,91,1],[42,3754,3844,91,3],[38,3388,3478,91,7],[30,2655,2746,92,15]]];</script>
-<script src="../assets/ky-core.js?v=20261107b"></script>
-<script src="../assets/ky-day.js?v=20261107b"></script>
+<script src="../assets/ky-core.js?v=20261109a"></script>
+<script src="../assets/ky-day.js?v=20261109a"></script>
 </body>
 </html>

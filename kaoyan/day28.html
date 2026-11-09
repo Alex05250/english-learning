@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Day 28 · No.2472–2563 · 考研大纲词汇</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231d1d1f'/%3E%3Ctext x='32' y='44' font-size='30' font-weight='700' font-family='Segoe UI,Arial,sans-serif' text-anchor='middle' fill='%23fff'%3E研%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="../assets/base.css?v=20261107b">
-<link rel="stylesheet" href="../assets/app.css?v=20261107b">
-<link rel="stylesheet" href="../assets/ky.css?v=20261107b">
+<link rel="stylesheet" href="../assets/base.css?v=20261109a">
+<link rel="stylesheet" href="../assets/app.css?v=20261109a">
+<link rel="stylesheet" href="../assets/ky.css?v=20261109a">
 </head>
 <body>
 
@@ -43,10 +43,20 @@
 <section class="view on" id="p-list">
   <div class="rows">
     <div class="listbar">
+      <span class="fstat" id="fstat"><span>只看不熟 · 还剩</span><b>0</b><span>个</span></span>
+      <button class="pill filt" id="filtBtn" type="button" aria-pressed="false" title="只显示还没打勾的单词">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-6.2 10-6.2S22 12 22 12s-3.8 6.2-10 6.2S2 12 2 12Z"/><circle cx="12" cy="12" r="2.7"/></svg><span>只看不熟</span>
+      </button>
       <button class="pill danger" id="clearBtn" type="button" title="清空本页全部打勾，清空后可撤销" disabled>全部取消打勾</button>
       <button class="pill" id="blurBtn" type="button">遮住释义</button>
     </div>
     <div id="groups"></div>
+    <div class="fempty" id="fempty" hidden>
+      <div class="feic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.9l4.9 4.9L19.6 6.9"/></svg></div>
+      <p class="fet">这一天全部打勾了</p>
+      <p class="fes">92 个词都已标为已会，没有待巩固的不熟词。</p>
+      <button class="pill primary" id="feOff" type="button">看全部词</button>
+    </div>
   </div>
 </section>
 
@@ -102,7 +112,7 @@
 <footer>2017 版《考研英语大纲词汇》乱序版　·　音标为标准美式 IPA　·　进度保存在本机浏览器</footer>
 
 <script>window.KY_DATA = [28,2472,2563,92,[27,25,21,13],[[2472,"come","kəm",[["v.","来","出现于，产生","是，成为","开始，终于"]]],[2473,"and","ənd",[["conj.","和，与，而且","那么","接连，又"]]],[2474,"swift","swɪft",[["adj./adv.","快的(地)","敏捷的(地)"],["adj.","立刻的"],["n.","雨燕"]]],[2475,"angle","ˈæŋgəl",[["n.","角，角度"],["v.","钓鱼","(采用各种方法）取得"]]],[2476,"bewilder","bɪˈwɪldər",[["v.","使迷惑,难住"]]],[2477,"careful","ˈkɛrfəl",[["adj.","小心的,仔细的","细致的,精心的"]]],[2478,"visible","ˈvɪzəbəl",[["adj.","看得见的, 明显的, 显著的"]]],[2479,"this","ðɪs",[["pron.","这(个)"],["adj.","这(个)","今"],["adv.","这(样)"]]],[2480,"crab","kræb",[["n.","螃蟹,蟹肉"]]],[2481,"scare","skɛr",[["n.","惊恐,恐慌"],["v.","惊吓,受惊"]]],[2482,"shady","ˈʃeɪdi",[["adj.","成荫的,多荫的","可疑的,靠不住的"]]],[2483,"exclusive","ɪkˈsklusɪv",[["adj.","独占的","排他的","孤高的","唯一的","高级的"]]],[2484,"bloody","ˈblədi",[["adj.","流血的,血腥的"]]],[2485,"think","θɪŋk",[["v.","想，思索","认为，以为","想要","料想，预料"]]],[2486,"okay","ˌoʊˈkeɪ",[["adj.","(okey，OK，O.K.)好，行，不错"],["n.","同意"]]],[2487,"jeans","ʤinz",[["n.","牛仔裤（又称blue jeans, dungarees等）"]]],[2488,"cellar","ˈsɛlər",[["n.","地窑,地下室"]]],[2489,"grief","grif",[["n.","悲伤，悲痛","悲伤的事，悲痛的缘由"]]],[2490,"machine","məˈʃin",[["n.","机器,机械"],["v.","用机器加工"]]],[2491,"trade","treɪd",[["n.","贸易,商业","职业,行业"],["v.","经商,交易"]]],[2492,"deliver","dɪˈlɪvər",[["v.","交付,递送","发表,表达","释放","接生"]]],[2493,"mass","mæs",[["n.","大量,众多","团,块"],["pl.","群众,民众","质量"]]],[2494,"honor","ˈɑnər",[["n.","(honour)尊敬,敬意","荣誉,光荣"],["v.","尊敬"]]],[2495,"footstep","ˈfʊtˌstɛp",[["n.","脚步(声),足迹"]]],[2496,"reign","reɪn",[["n./v.","统治,支配,盛行"],["n.","统治时期"],["v.","占优势"]]],[2497,"provision","prəˈvɪʒən",[["n.","供应,(一批)供应品","预备","条款"],["pl.","给养"]]],[2498,"information","ˌɪnˌfɔrˈmeɪʃən",[["n.","通知,报告","情报,资料,消息","信息"]]],[2499,"summon","ˈsəmən",[["v.","召唤","传讯,传唤","鼓起(勇气),振作(精神)"]]],[2500,"emphasis","ˈɛmfəsɪs",[["n.","强调,重点"]]],[2501,"boil","bɔɪl",[["v.","(使)沸腾,煮(沸)"]]],[2502,"agency","ˈeɪʤənsi",[["n.","代理(处)","代办处","[美](政府的)机关，厅"]]],[2503,"brief","brif",[["adj.","简短的,简洁的"],["v.","简短介绍,简要汇报"]]],[2504,"combine","ˈkɑmbaɪn",[["v.","联合","结合","化合"],["n.","集团","联合企业"]]],[2505,"roast","roʊst",[["v.","烤,炙,烘"]]],[2506,"snap","snæp",[["v.","啪地移动","(使）突然断开，断开（成两截)"]]],[2507,"whose","huz",[["pron.","谁的","哪(个)人的，那些(人)的"]]],[2508,"ambitious","æmˈbɪʃəs",[["adj.","有抱负的，雄心勃勃的","有野心的"]]],[2509,"blanket","ˈblæŋkɪt",[["n.","毯子(可数)","厚厚一层(可数)"],["vt.","铺上一层"]]],[2510,"escalate","ˈɛskəˌleɪt",[["v.","(使)逐步增长(或发展)，(使)逐步升级"]]],[2511,"hop","hɑp",[["v.","人单足跳","跳上(车等)"],["n.","蹦跳","短程飞行"]]],[2512,"hug","həg",[["v./n.","热烈拥抱,紧抱"]]],[2513,"foolish","ˈfulɪʃ",[["adj.","愚笨的,愚蠢的"]]],[2514,"splash","splæʃ",[["v.","溅,泼"],["n.","溅,飞溅声"]]],[2515,"condense","kənˈdɛns",[["v.","(使)冷凝，(使)凝结","浓缩，压缩，简缩"]]],[2516,"coward","kaʊərd",[["n.","懦夫,胆怯者"]]],[2517,"riot","raɪət",[["n.","暴(骚)乱,蔓延,彩色缤纷"],["v.","骚乱,暴动"]]],[2518,"kit","kɪt",[["n.","成套工具,用具包,工具箱"]]],[2519,"station","ˈsteɪʃən",[["n.","车站","所,站,局","身份,地位"],["v.","安置,驻扎"]]],[2520,"symphony","ˈsɪmfəni",[["n.","交响乐,交响曲"]]],[2521,"nitrogen","ˈnaɪtrəʤən",[["n.","化，氮"]]],[2522,"scrape","skreɪp",[["v.","刮(掉),擦过,勉强通过"],["n.","刮,擦痕,刮擦声"]]],[2523,"autumn","ˈɔtəm",[["n.","秋，秋季","成熟期，渐衰期"]]],[2524,"gate","geɪt",[["n.","大门","入口","观众人数，门票收入"]]],[2525,"aural","ˈɔrəl",[["adj.","听觉的，听力的"]]],[2526,"free","fri",[["adj.","自由的","免费的","免税的","空闲的"],["vt.","释放"]]],[2527,"able","ˈeɪbəl",[["adj.","有(能力、知识等)做某事，有本事的"]]],[2528,"skate","skeɪt",[["v.","溜冰,滑冰"],["n.","冰鞋"]]],[2529,"cater","ˈkeɪtər",[["vi.","(for/to)满足,迎合","(for)提供饮食及服务"]]],[2530,"miracle","ˈmɪrəkəl",[["n.","奇迹,令人惊奇的人(或事)"]]],[2531,"hundred","ˈhənərd",[["num.","百，一百"],["pl.","许多"],["adj.","一百的","许多"]]],[2532,"textbook","ˈtɛkstˌbʊk",[["n.","课本,教科书"]]],[2533,"police","pəˈlis",[["n.","警察,警察机关"],["adj.","警察的"],["v.","管辖"]]],[2534,"graze","greɪz",[["vi.","吃青草"],["vt.","放牧","擦伤","掠过 ."],["n.","擦伤(处)"]]],[2535,"route","rut",[["n.","路线,路程"]]],[2536,"northwest","ˌnɔrθˈwɛst",[["n.","西北方,西北部"],["adj.","西北的"],["adv.","向西北,在西北"]]],[2537,"merry","ˈmɛri",[["adj.","欢乐的,愉快的"]]],[2538,"powerful","ˈpaʊərfəl",[["adj.","强大的,有力的,有权的"]]],[2539,"brown","braʊn",[["n./adj.","褐色(的),棕色(的)"]]],[2540,"lonely","ˈloʊnli",[["adj.","孤独的，寂寞的","荒凉的，人迹稀少的"]]],[2541,"fabric","ˈfæbrɪk",[["n.","织物","织品","结构","构造","建筑物"]]],[2542,"composition","ˌkɑmpəˈzɪʃən",[["n.","作品,作文,乐曲","作曲","结构,组成,成分"]]],[2543,"cylinder","ˈsɪlɪndər",[["n.","圆筒,圆锥体","汽缸"]]],[2544,"when","wɪn",[["adv./pron.","何时","当时"],["conj.","那时","然后","而"]]],[2545,"radar","ˈreɪˌdɑr",[["n.","雷达"]]],[2546,"baggage","ˈbægɪʤ",[["n.","行李"]]],[2547,"prompt","prɑmpt",[["adj.","敏捷的,迅速的,即刻的"],["v.","激起,促进,推动"]]],[2548,"criminal","ˈkrɪmənəl",[["n.","罪犯,刑事犯"],["adj.","犯罪的,刑事的"]]],[2549,"impose","ˌɪmˈpoʊz",[["v.","征(税)","(on)把…强加给"]]],[2550,"delicious","dɪˈlɪʃəs",[["adj.","美味的","美妙的","使人愉快的"]]],[2551,"anxiety","æŋˈzaɪəti",[["n.","挂念，焦虑，焦急，忧虑","渴望，热望"]]],[2552,"grieve","griv",[["v.","使悲伤,使伤心"]]],[2553,"cycle","ˈsaɪkəl",[["n.","自行车","周期,循环"],["v.","骑自行车","循环"]]],[2554,"darling","ˈdɑrlɪŋ",[["n.","心爱的人,亲爱的"]]],[2555,"match","mæʧ",[["n.","火柴","比赛,竞赛","对手,配偶"],["v.","匹配,相称"]]],[2556,"sorry","ˈsɑri",[["adj.","对不起，抱歉的","难过，悔恨的","使人伤心"]]],[2557,"influential","ˌɪnfluˈɛnʃəl",[["adj.","有影响的","有权势的"]]],[2558,"width","wɪdθ",[["n.","宽度","宽阔,广阔"]]],[2559,"profit","ˈprɑfɪt",[["n.","利润,收益"],["v.","(by,from)得利,获益","有利于"]]],[2560,"youngster","ˈjəŋstər",[["n.","小伙子，年轻人","少年，儿童"]]],[2561,"bribe","braɪb",[["n.","贿赂"],["v.","向…行贿,买通"]]],[2562,"magic","ˈmæʤɪk",[["n.","魔术,魔(魅)力,巫术"],["adj.","有魔力的,魔术的"]]],[2563,"shy","ʃaɪ",[["adj.","怕羞的，腼腆的","胆怯的"],["vi.","惊退，畏缩"]]]],[[27,2381,2471,91,1],[25,2198,2288,91,3],[21,1832,1922,91,7],[13,1099,1190,92,15]]];</script>
-<script src="../assets/ky-core.js?v=20261107b"></script>
-<script src="../assets/ky-day.js?v=20261107b"></script>
+<script src="../assets/ky-core.js?v=20261109a"></script>
+<script src="../assets/ky-day.js?v=20261109a"></script>
 </body>
 </html>

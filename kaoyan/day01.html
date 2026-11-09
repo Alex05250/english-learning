@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Day 01 · No.1–92 · 考研大纲词汇</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231d1d1f'/%3E%3Ctext x='32' y='44' font-size='30' font-weight='700' font-family='Segoe UI,Arial,sans-serif' text-anchor='middle' fill='%23fff'%3E研%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="../assets/base.css?v=20261107b">
-<link rel="stylesheet" href="../assets/app.css?v=20261107b">
-<link rel="stylesheet" href="../assets/ky.css?v=20261107b">
+<link rel="stylesheet" href="../assets/base.css?v=20261109a">
+<link rel="stylesheet" href="../assets/app.css?v=20261109a">
+<link rel="stylesheet" href="../assets/ky.css?v=20261109a">
 </head>
 <body>
 
@@ -43,10 +43,20 @@
 <section class="view on" id="p-list">
   <div class="rows">
     <div class="listbar">
+      <span class="fstat" id="fstat"><span>只看不熟 · 还剩</span><b>0</b><span>个</span></span>
+      <button class="pill filt" id="filtBtn" type="button" aria-pressed="false" title="只显示还没打勾的单词">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-6.2 10-6.2S22 12 22 12s-3.8 6.2-10 6.2S2 12 2 12Z"/><circle cx="12" cy="12" r="2.7"/></svg><span>只看不熟</span>
+      </button>
       <button class="pill danger" id="clearBtn" type="button" title="清空本页全部打勾，清空后可撤销" disabled>全部取消打勾</button>
       <button class="pill" id="blurBtn" type="button">遮住释义</button>
     </div>
     <div id="groups"></div>
+    <div class="fempty" id="fempty" hidden>
+      <div class="feic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.9l4.9 4.9L19.6 6.9"/></svg></div>
+      <p class="fet">这一天全部打勾了</p>
+      <p class="fes">92 个词都已标为已会，没有待巩固的不熟词。</p>
+      <button class="pill primary" id="feOff" type="button">看全部词</button>
+    </div>
   </div>
 </section>
 
@@ -102,7 +112,7 @@
 <footer>2017 版《考研英语大纲词汇》乱序版　·　音标为标准美式 IPA　·　进度保存在本机浏览器</footer>
 
 <script>window.KY_DATA = [1,1,92,92,[],[[1,"due","du",[["adj.","(to)应支付的","(车,船等)预定应到达的"]]],[2,"alleviate","əˈliviˌeɪt",[["v.","减轻，缓和，缓解(痛苦等)"]]],[3,"weave","wiv",[["v.","编(织)"],["n.","编织法，编织式样"]]],[4,"drawing","drɔɪŋ",[["n.","绘图,图样"]]],[5,"snow","snoʊ",[["n.","雪，下雪"],["vi.","下雪","如雪一般地落下"]]],[6,"realistic","ˌriəˈlɪstɪk",[["adj.","现实(主义)的"]]],[7,"nevertheless","ˌnɛvərðəˈlɛs",[["conj.","(nonetheless)然而,不过"],["adv.","仍然,不过"]]],[8,"ride","raɪd",[["v./n.","骑,乘"]]],[9,"expression","ɪkˈsprɛʃən",[["n.","表达","表情","声调","腔调","榨出","措词","式","符号"]]],[10,"spur","spər",[["n.","靴刺,马刺","刺激,刺激物"],["v.","刺激,激励"]]],[11,"clutch","kləʧ",[["v.","抓住,攫住,掌握"],["n.","离合器"]]],[12,"pest","pɛst",[["n.","害虫"]]],[13,"standard","ˈstændərd",[["n.","标准,规则"],["adj.","标准的"]]],[14,"compass","ˈkəmpəs",[["n.","罗盘,指南针"],["pl.","圆规"]]],[15,"gloomy","ˈglumi",[["adj.","阴暗的,阴沉的,令人沮丧的,阴郁的"]]],[16,"fortunate","ˈfɔrʧənət",[["adj.","幸运的,侥幸的"]]],[17,"spectacular","spɛkˈtækjələr",[["adj.","壮观的,引人注目的"],["n.","壮观的演出"]]],[18,"nutrition","nuˈtrɪʃən",[["n.","营养,营养学"]]],[19,"anonymous","əˈnɑnəməs",[["adj.","匿名的，无名的，姓氏不明的"]]],[20,"pat","pæt",[["v./n.","轻拍,轻打,抚摸"]]],[21,"speech","spiʧ",[["n.","演说,讲话","言语,语言"]]],[22,"tile","taɪl",[["n.","瓦片,瓷砖"],["vt.","铺瓦于，贴砖于"]]],[23,"dorm","dɔrm",[["n.","(dormitory)［美］［口］宿舍"]]],[24,"dictionary","ˈdɪkʃəˌnɛri",[["n.","词典,字典"]]],[25,"screen","skrin",[["n.","屏幕,屏风","帘"],["v.","掩蔽,包庇","筛选"]]],[26,"lover","ˈləvər",[["n.","爱好者"],["pl.","情侣"]]],[27,"shirt","ʃərt",[["n.","衬衫"]]],[28,"emphasize","ˈɛmfəˌsaɪz",[["v.","(emphasise)强调"]]],[29,"pollution","pəˈluʃən",[["n.","污染"]]],[30,"shepherd","ˈʃɛpərd",[["n.","牧民,牧羊人"]]],[31,"foster","ˈfɑstər",[["vt.","养育","收养","怀抱","鼓励"],["adj.","收养的"],["n.","养育者"]]],[32,"favorite","ˈfeɪvərɪt",[["n.","(favourite)最喜欢的人或物"],["adj.","喜爱的"]]],[33,"technology","tɛkˈnɑləʤi",[["n.","科学技术","工业技术","应用科学"]]],[34,"wipe","waɪp",[["v./n.","擦,揩,抹"]]],[35,"scold","skoʊld",[["v.","责骂,训斥"]]],[36,"dessert","dɪˈzərt",[["n.","正餐后的水果或甜食"]]],[37,"outlet","ˈaʊˌtlɛt",[["n.","出路,出口","销路,市场","发泄方法","电源插座"]]],[38,"list","lɪst",[["n.","表,目录,名单"],["v.","把…编列成表,列入表内"]]],[39,"important","ˌɪmˈpɔrtənt",[["adj.","重要的,重大的","有地位的,有权力的"]]],[40,"fatigue","fəˈtig",[["n./v.","(使)疲劳"]]],[41,"insure","ˌɪnˈʃʊr",[["vt.","保险,给…保险","保证"]]],[42,"vicious","ˈvɪʃəs",[["adj.","恶毒的,凶残的,邪恶的"]]],[43,"tame","teɪm",[["adj.","驯服的,温顺的","沉闷的,乏味的"],["vt.","驯服"]]],[44,"vapour","ˈveɪpə(r)",[["n.","(vapor)汽，(水)蒸气"]]],[45,"fold","foʊld",[["v.","折叠","合拢","抱住"],["n.","褶,褶痕","羊栏","信徒"]]],[46,"rain","reɪn",[["n.","雨","雨天","下雨"],["vi.","下雨"],["vt.","使大量落下"]]],[47,"monster","ˈmɑnstər",[["n.","怪物,妖怪,畸形的动植物"]]],[48,"injure","ˈɪnʤər",[["v.","损害,损伤,伤害"]]],[49,"pass","pæs",[["v.","经/通/穿/度过","传递"],["n.","通行证","考试及格"]]],[50,"astonish","əˈstɑnɪʃ",[["vt.","使惊讶，使吃惊"]]],[51,"component","kəmˈpoʊnənt",[["n.","组成部分,成分,元件"],["adj.","组成的,合成的"]]],[52,"tea","ti",[["n.","茶(叶)","午后茶点"]]],[53,"mountain","ˈmaʊntən",[["n.","山"]]],[54,"small","smɔl",[["adj.","小的","年幼的","不重要的","小规模(经营)的"]]],[55,"isolate","ˈaɪsəˌleɪt",[["vt.","隔离,孤立"]]],[56,"administer","ədˈmɪnɪstər",[["v.","施行，实施","掌管，料理...的事务","给予"]]],[57,"trail","treɪl",[["n.","踪迹,痕迹","小路"],["v.","追踪,跟踪","拖,拖曳"]]],[58,"hospital","ˈhɑˌspɪtəl",[["n.","医院"]]],[59,"elegant","ˈɛləgənt",[["adj.","优雅的","端庄的","雅致的"]]],[60,"conversation","ˌkɑnvərˈseɪʃən",[["n.","会话,谈话"]]],[61,"interest","ˈɪntəˌrɛst",[["n.","(in)兴趣,重要性","利益"],["v.","(in)使发生兴趣"]]],[62,"naughty","ˈnɔti",[["adj.","顽皮的,淘气的"]]],[63,"trolley","ˈtrɑli",[["n.","手推车","(英)无轨电车,(美)有轨电车"]]],[64,"fork","fɔrk",[["n.","叉,耙","叉形物","餐叉"]]],[65,"awake","əˈweɪk",[["adj.","醒着的"],["vt.","唤醒，使觉醒"],["vi.","醒来，醒悟到"]]],[66,"away","əˈweɪ",[["adv.","在远处","离开","渐渐远去","一直","去掉"]]],[67,"banana","bəˈnænə",[["n.","香蕉"]]],[68,"unlikely","ənˈlaɪkli",[["adj.","未必的,靠不住的"]]],[69,"temporary","ˈtɛmpərˌɛri",[["adj.","暂时的,临时的"]]],[70,"advance","ədˈvæns",[["n.","前进，预付"],["vi.","前进，进展"],["vt.","促进，推进"]]],[71,"locality","loʊˈkæləti",[["n.","位置,地点"]]],[72,"eccentric","ˌɛkˈsɛntrɪk",[["adj.","古怪的，怪癖的，异乎寻常的"],["n.","古怪的人"]]],[73,"parasite","ˈpɛrəˌsaɪt",[["n.","寄生虫,食客"]]],[74,"minister","ˈmɪnɪstər",[["n.","部长,大臣"]]],[75,"musical","mˈjuzɪkəl",[["adj.","音乐的","有音乐才能的"],["n.","音乐片"]]],[76,"fairly","ˈfɛrli",[["adv.","公正地,正当地","相当,还算"]]],[77,"wish","wɪʃ",[["v.","希望","但愿","祝"],["n.","愿望，希望"],["pl.","祝愿"]]],[78,"character","ˈkɛrɪktər",[["n.","性格,品质,特性","人物,角色","字符,(汉)字"]]],[79,"install","ˌɪnˈstɔl",[["vt.","(instal)安装,设置,安置","使就职,任命"]]],[80,"danger","ˈdeɪnʤər",[["n.","危险","威胁","危险事物"]]],[81,"piece","pis",[["n.","(一)件/片/篇","碎片"],["v.","(together)拼合,拼凑"]]],[82,"abstract","ˈæbˌstrækt",[["adj.","抽象的"],["n.","摘要，梗概"],["vt.","提取","摘录要点"]]],[83,"cook","kʊk",[["n.","厨师"],["v.","烹调，烧煮","纂改(账目)，捏造"]]],[84,"explain","ɪkˈspleɪn",[["v.","解释,说明"]]],[85,"lucky","ˈləki",[["adj.","幸运的,侥幸的"]]],[86,"governor","ˈgəvərnər",[["n.","统治者,管理者,总督,州(省)长"]]],[87,"unusual","ənˈjuˌʒuəl",[["adj.","不平常的,与众不同的"]]],[88,"membership","ˈmɛmbərˌʃɪp",[["n.","会员资格,成员资格"]]],[89,"identify","aɪˈdɛntəˌfaɪ",[["v.","识别,鉴别","(with)把…和…看成一样"]]],[90,"generous","ˈʤɛnərəs",[["adj.","宽宏大量的,慷慨的"]]],[91,"sick","sɪk",[["adj.","有病的,患病的","恶心的,想吐的"]]],[92,"fridge","frɪʤ",[["n.","(refrigerator的略语)冰箱"]]]],[]];</script>
-<script src="../assets/ky-core.js?v=20261107b"></script>
-<script src="../assets/ky-day.js?v=20261107b"></script>
+<script src="../assets/ky-core.js?v=20261109a"></script>
+<script src="../assets/ky-day.js?v=20261109a"></script>
 </body>
 </html>

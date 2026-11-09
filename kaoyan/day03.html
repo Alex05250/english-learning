@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Day 03 · No.184–275 · 考研大纲词汇</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231d1d1f'/%3E%3Ctext x='32' y='44' font-size='30' font-weight='700' font-family='Segoe UI,Arial,sans-serif' text-anchor='middle' fill='%23fff'%3E研%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="../assets/base.css?v=20261107b">
-<link rel="stylesheet" href="../assets/app.css?v=20261107b">
-<link rel="stylesheet" href="../assets/ky.css?v=20261107b">
+<link rel="stylesheet" href="../assets/base.css?v=20261109a">
+<link rel="stylesheet" href="../assets/app.css?v=20261109a">
+<link rel="stylesheet" href="../assets/ky.css?v=20261109a">
 </head>
 <body>
 
@@ -43,10 +43,20 @@
 <section class="view on" id="p-list">
   <div class="rows">
     <div class="listbar">
+      <span class="fstat" id="fstat"><span>只看不熟 · 还剩</span><b>0</b><span>个</span></span>
+      <button class="pill filt" id="filtBtn" type="button" aria-pressed="false" title="只显示还没打勾的单词">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-6.2 10-6.2S22 12 22 12s-3.8 6.2-10 6.2S2 12 2 12Z"/><circle cx="12" cy="12" r="2.7"/></svg><span>只看不熟</span>
+      </button>
       <button class="pill danger" id="clearBtn" type="button" title="清空本页全部打勾，清空后可撤销" disabled>全部取消打勾</button>
       <button class="pill" id="blurBtn" type="button">遮住释义</button>
     </div>
     <div id="groups"></div>
+    <div class="fempty" id="fempty" hidden>
+      <div class="feic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.9l4.9 4.9L19.6 6.9"/></svg></div>
+      <p class="fet">这一天全部打勾了</p>
+      <p class="fes">92 个词都已标为已会，没有待巩固的不熟词。</p>
+      <button class="pill primary" id="feOff" type="button">看全部词</button>
+    </div>
   </div>
 </section>
 
@@ -102,7 +112,7 @@
 <footer>2017 版《考研英语大纲词汇》乱序版　·　音标为标准美式 IPA　·　进度保存在本机浏览器</footer>
 
 <script>window.KY_DATA = [3,184,275,92,[2],[[184,"scrutiny","ˈskrutəni",[["n.","周密的调查","仔细看","监视","选票复查"]]],[185,"strike","straɪk",[["n./vi.","罢工"],["vt.","打，击","攻击","给…深刻印象"]]],[186,"cereal","ˈsɪriəl",[["n.","加工而成的谷类食物","谷类植物，谷物"]]],[187,"plain","pleɪn",[["adj.","明白的","朴素的","坦率","平凡"],["n.","平原,旷野"]]],[188,"gratitude","ˈgrætəˌtud",[["n.","感激,感谢"]]],[189,"opera","ˈɑprə",[["n.","歌剧"]]],[190,"electricity","ɪˌlɛkˈtrɪsəti",[["n.","电,电流","电学"]]],[191,"potential","pəˈtɛnʃəl",[["adj.","潜在的,可能的"],["n.","潜能,潜力"]]],[192,"quilt","kwɪlt",[["n.","被子"]]],[193,"these","ðiz",[["adj.","this的复数，这些","这些人(东西)"]]],[194,"slack","slæk",[["adj.","懈怠的,松驰的","萧条的"],["n.","淡季"],["pl.","便裤"]]],[195,"spectrum","ˈspɛktrəm",[["n.","谱，光谱，频谱","范围，幅度，系列"]]],[196,"serve","sərv",[["v.","服务,尽责","招待,侍候","符合,适用"]]],[197,"instinct","ˈɪnstɪŋkt",[["n.","本能,直觉,天性"]]],[198,"unite","ˈjuˌnaɪt",[["vi.","联合,团结","统一,合并"],["vt.","使联合"]]],[199,"sufficient","səˈfɪʃənt",[["adj.","(for)足够的,充分的(比enough拘谨、正式)"]]],[200,"major","ˈmeɪʤər",[["adj.","主要的"],["n.","成年人,专业学生,主修课程"],["v.","主修"]]],[201,"slice","slaɪs",[["n.","薄片,切片","一份","部分切(片)"]]],[202,"satisfactory","ˌsætɪsˈfæktəri",[["adj.","令人满意的,圆满的,良好的,符合要求的"]]],[203,"kid","kɪd",[["n.","小孩,儿童"],["v.","戏弄,取笑"]]],[204,"lunch","lənʧ",[["n.","午餐，(美)便餐"]]],[205,"coherent","koʊˈhɪrənt",[["adj.","一致的，协调的","(话语等)条理清楚的"]]],[206,"thrift","θrɪft",[["adj.","节约，节俭"]]],[207,"chest","ʧɛst",[["n.","胸腔,胸膛","箱,柜"]]],[208,"articulate","ɑrˈtɪkjəˌleɪt",[["adj.","善于表达的","有关节相连的"],["v.","清楚地讲话"]]],[209,"e-mail","ˈiˌmeɪl",[["n.","(electronic mail)电子信函，电子邮件"]]],[210,"brass","bræs",[["n.","黄铜,铜器"]]],[211,"acquisition","ˌækwəˈzɪʃən",[["n.","取得，学到，养成(习惯)","获得的东西"]]],[212,"dial","daɪəl",[["n.","钟(表)面,刻度盘,拨号盘"],["v.","拨号,打电话"]]],[213,"eternal","ɪˈtərnəl",[["n.","永久的,永恒的"]]],[214,"historical","hɪˈstɔrɪkəl",[["adj.","历史的","有关历史的"]]],[215,"lumber","ˈləmbər",[["n.","木材,木料"]]],[216,"motion","ˈmoʊʃən",[["n.","运动,动","提议,动议"],["v.","提议,动议"]]],[217,"breed","brid",[["v.","(使)繁殖,生殖","产生","教养,抚养"],["n.","品种"]]],[218,"organism","ˈɔrgəˌnɪzəm",[["n.","生物，有机体"]]],[219,"theirs","ðɛrz",[["pron.","they的物主代词，他(她、它)们的"]]],[220,"taste","teɪst",[["v.","品尝","(of)有…味道","体验"],["n.","滋味","味觉"]]],[221,"educate","ˈɛʤəˌkeɪt",[["v.","教育,培养,训练"]]],[222,"hello","hɛˈloʊ",[["int.","英(美)喂,你好(用来打招呼或引起注意)"]]],[223,"accessory","ækˈsɛsəri",[["n.","附件,附属品","(为全套衣服增加美感的)服饰"]]],[224,"far","fɑr",[["adj./adv.","远，久远，遥远"],["adv.","到…程度，…得多"]]],[225,"dismay","dɪsˈmeɪ",[["n./v.","(使)沮丧","(使)惊慌","(使)失望,(使)绝望"]]],[226,"evoke","ɪˈvoʊk",[["vt.","唤起(回忆、感情等)","引起"]]],[227,"metaphor","ˈmɛtəfɔr",[["n.","隐喻，暗喻"]]],[228,"wit","wɪt",[["n.","智力,才智,智慧"]]],[229,"story","ˈstɔri",[["n.","故事,传说,小说","(=storey)楼层"]]],[230,"parameter","pərˈæmətər",[["n.","参数,参量"]]],[231,"cunning","ˈkənɪŋ",[["adj./n.","狡猾(的),狡诈(的)"]]],[232,"axis","ˈæksəs",[["n.","轴，轴线，中心线","坐标轴，基准线"]]],[233,"strive","straɪv",[["v.","奋斗,努力"]]],[234,"lamp","læmp",[["n.","灯"]]],[235,"envisage","ɛnˈvɪzɪʤ",[["v.","想象，设想，展望，正视"]]],[236,"accuse","əˈkjuz",[["vt.","控告，指责"],["vi.","指控，指责"]]],[237,"fail","feɪl",[["v.","失败,不及格","衰退,减弱"]]],[238,"comply","kəmˈplaɪ",[["v.","(with)遵照，照做，应允","顺从，服从"]]],[239,"deceit","dɪˈsit",[["n.","欺骗,欺骗行为"]]],[240,"dash","dæʃ",[["v./n.","冲,猛冲,突进"],["n.","破折号"]]],[241,"oven","ˈəvən",[["n.","炉,灶,灶箱"]]],[242,"conduct","ˈkɑndəkt",[["n.","行为,品行"],["v.","引导","管理","指挥(乐队)","传导"]]],[243,"assault","əˈsɔlt",[["v.","猛烈地攻击，袭击"],["n.","突然而猛烈的攻击"]]],[244,"worldwide","ˈwərldˈwaɪd",[["adj.","全世界的,世界范围的"],["adv.","遍及全世界"]]],[245,"lower","loʊər",[["adj.","较低的,下级的,下游的"],["v.","降下,放低"]]],[246,"seed","sid",[["n.","种子"],["v.","播种","结实,结籽"]]],[247,"percentage","pərˈsɛnɪʤ",[["n.","百分数,百分率,百分比"]]],[248,"tire","taɪər",[["v.","(使)疲倦,(使)厌倦"],["n.","(=tyre)轮胎,车胎"]]],[249,"tough","təf",[["adj.","坚韧的,棘手的","强健的,吃苦耐劳的","粗暴的"]]],[250,"uncover","ənˈkəvər",[["v.","揭开,揭露"]]],[251,"quota","kˈwoʊtə",[["n.","(生产、进出口等的)配额，(移民的)限额"]]],[252,"grape","greɪp",[["n.","葡萄"]]],[253,"duplicate","ˈdupləˌkeɪt",[["n.","复制品"],["v.","复写,使加倍"],["adj.","复制的,二重的"]]],[254,"reserve","rɪˈzərv",[["n.","储备(物),储备金","缄默"],["v.","保留,储备","预定"]]],[255,"opening","ˈoʊpənɪŋ",[["n.","开,开放,开始,空缺,机会"],["adj.","开始的,开幕的"]]],[256,"innumerable","ˌɪˈnumərəbəl",[["adj.","无数的,数不清的"]]],[257,"doctor","ˈdɔktər",[["n.","医生","博士"],["vt.","授以博士学位","诊断","修改"]]],[258,"steer","stɪr",[["vt.","驾驶，为…操舵","引导"],["vi.","驾驶"]]],[259,"pot","pɑt",[["n.","罐,壶"]]],[260,"complain","kəmˈpleɪn",[["v.","(about,of)抱怨","申诉"]]],[261,"playground","ˈpleɪˌgraʊnd",[["n.","运动场,游戏场"]]],[262,"attract","əˈtrækt",[["vt.","引起的注意(或兴趣等),吸引","引起","激起"]]],[263,"enough","ɪˈnəf",[["adj.","(for)足够的"],["n.","足够,充分"],["adv.","足够地"]]],[264,"responsibility","riˌspɑnsəˈbɪləti",[["n.","责任,责任心","职责,任务"]]],[265,"sight","saɪt",[["n.","视力","望见,瞥见","视域","眼界","情景,奇观"]]],[266,"carriage","ˈkɛrəʤ",[["n.","(四轮)马车","(火车)客车厢"]]],[267,"attempt","əˈtɛmpt",[["vt.","企图，试图"],["n.","努力，尝试，企图"]]],[268,"cotton","ˈkɔtən",[["n.","棉花","棉线,棉纱","棉制品"]]],[269,"further","ˈfərðər",[["adv./adj.","更远,更往前","进一步"],["v.","促进,增进"]]],[270,"course","kɔrs",[["n.","课程,教程","过程,进程","路程,路线","一道菜"]]],[271,"lash","læʃ",[["v.","鞭打,摆动,捆扎"],["n.","鞭子,鞭打,睫毛,讽刺"]]],[272,"fine","faɪn",[["adj.","晴朗的,美好的,细致的"],["v./n.","罚金,罚款"]]],[273,"choose","ʧuz",[["v.","选择,挑选","甘愿"]]],[274,"none","nən",[["pron.","没有任何人(东西)","都不"],["adv.","一点也不"]]],[275,"acquire","əkˈwaɪər",[["v.","获得","学到(知识等)","养成(习惯)"]]]],[[2,93,183,91,1]]];</script>
-<script src="../assets/ky-core.js?v=20261107b"></script>
-<script src="../assets/ky-day.js?v=20261107b"></script>
+<script src="../assets/ky-core.js?v=20261109a"></script>
+<script src="../assets/ky-day.js?v=20261109a"></script>
 </body>
 </html>

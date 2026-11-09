@@ -55,9 +55,64 @@
 mark{background:color-mix(in srgb,var(--accent) 20%,transparent);color:inherit;border-radius:2px;padding:0 1.5px}
 
 /* 词表工具条 */
-.listbar{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:10px}
+.listbar{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;row-gap:8px}
 .listbar .pill{font-size:12.5px;padding:8px 15px;font-variant-numeric:tabular-nums}
 .listbar .pill.danger:hover:not(:disabled){border-color:#e5484d;color:#e5484d}
+
+/* 只看不熟：左侧计数 + 过滤胶囊 */
+.listbar .fstat{
+  margin-right:auto;display:inline-flex;align-items:center;gap:3px;
+  font-size:12.5px;color:var(--faint);white-space:nowrap;font-variant-numeric:tabular-nums;
+  opacity:0;transform:translateX(-6px);pointer-events:none;
+  transition:opacity .3s var(--ease),transform .42s var(--ease);
+}
+.listbar .fstat.on{opacity:1;transform:none}
+.listbar .fstat b{font-weight:600;color:var(--fg)}
+.listbar .pill.filt{display:inline-flex;align-items:center;gap:6px}
+.listbar .pill.filt svg{
+  width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round;margin-top:-1px;
+}
+.listbar .pill.filt[aria-pressed="true"]{
+  background:var(--accent);border-color:var(--accent);color:#fff;
+  box-shadow:0 8px 20px -12px color-mix(in srgb,var(--accent) 90%,transparent);
+}
+.listbar .pill.filt[aria-pressed="true"]:hover{color:#fff;filter:brightness(1.07)}
+.listbar .pill.filt[aria-pressed="true"]:active{transform:scale(.96)}
+.listbar .pill.filt[aria-pressed="true"] svg{animation:filtEye .6s var(--ease)}
+@keyframes filtEye{0%{transform:scaleY(1)}42%{transform:scaleY(.12)}100%{transform:scaleY(1)}}
+
+/* 切换过滤时整段列表先退后进；行/组逐个收合，布局自然上移 */
+#groups{transition:opacity .16s var(--ease),transform .16s var(--ease)}
+#groups.swapping{opacity:0;transform:translateY(-6px)}
+.wrow.is-collapsing{
+  transition:height .34s var(--ease),padding-top .34s var(--ease),padding-bottom .34s var(--ease),
+             opacity .26s var(--ease),transform .34s var(--ease),border-bottom-width .34s var(--ease);
+  overflow:hidden;
+}
+.wrow.is-gone{height:0!important;padding-top:0!important;padding-bottom:0!important;opacity:0;transform:translateY(-8px);border-bottom-width:0;pointer-events:none}
+details.group.is-collapsing{
+  transition:height .34s var(--ease),opacity .3s var(--ease),border-bottom-width .34s var(--ease);
+  overflow:hidden;
+}
+details.group.is-gone{height:0!important;opacity:0;border-bottom-width:0;pointer-events:none}
+
+/* 只看不熟：全部打勾后的空态 */
+.fempty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:56px 24px 40px;animation:softIn .5s var(--ease) both}
+.fempty[hidden]{display:none}
+.fempty .feic{
+  width:54px;height:54px;border-radius:50%;margin-bottom:18px;
+  display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--ok) 12%,transparent);
+}
+.fempty .feic svg{
+  width:27px;height:27px;fill:none;stroke:var(--ok);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:26;stroke-dashoffset:26;animation:feDraw .55s var(--ease) .14s forwards;
+}
+@keyframes feDraw{to{stroke-dashoffset:0}}
+.fempty .fet{font-size:16.5px;font-weight:600;letter-spacing:-.012em}
+.fempty .fes{font-size:13px;color:var(--sub);margin-top:7px;max-width:330px;line-height:1.65}
+.fempty .pill{margin-top:20px}
 
 /* 轻提示（清空打勾后可撤销） */
 .toast{
@@ -156,6 +211,7 @@ footer a:hover{color:var(--accent)}
 
 /* 响应式 */
 @media (max-width:640px){
+  .listbar .fstat{display:none}
   .hero{padding:52px 20px 32px}
   .grid{grid-template-columns:1fr 1fr;gap:10px}
   .card{padding:16px 15px;border-radius:15px}
