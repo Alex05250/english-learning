@@ -14,28 +14,40 @@
         if (row.dataset.usageReady) return;
         row.dataset.usageReady = '1';
         const word = (row.dataset.w || '').toLowerCase();
-        if (!Object.prototype.hasOwnProperty.call(data.index, word)) return;
-        const item = data.sentences[data.index[word]];
+        const item = Object.prototype.hasOwnProperty.call(data.index, word) ? data.sentences[data.index[word]] : null;
+        const phrases = (data.phrases && data.phrases[word]) || [];
+        if (!item && !phrases.length) return;
         const holder = row.querySelector('.senses');
-        if (!holder || !item) return;
+        if (!holder) return;
         const button = document.createElement('button');
         button.type = 'button'; button.className = 'usage-toggle';
-        button.textContent = '真题例句  +'; button.setAttribute('aria-expanded', 'false');
+        button.textContent = '真题用法  +'; button.setAttribute('aria-expanded', 'false');
         const box = document.createElement('div'); box.className = 'usage-body'; box.hidden = true;
-        const en = document.createElement('p'); en.lang = 'en'; en.textContent = item[2];
-        const zh = document.createElement('p'); zh.className = 'usage-zh'; zh.textContent = item[3];
-        const source = document.createElement('a');
-        const match = item[0].match(/(\d{4})(?:-(\d{2})-set(\d))?\.html$/);
-        source.textContent = match && match[2] ? match[1] + ' 年 ' + Number(match[2]) + ' 月六级 · 第 ' + match[3] + ' 套 ↗' : (match ? match[1] + ' 年考研英语一 ↗' : '查看原文 ↗');
-        source.href = new URL('../' + item[0] + (item[1] ? '#' + item[1] : ''), scriptURL).href;
-        source.target = '_blank'; source.rel = 'noopener noreferrer';
-        source.addEventListener('click', e => e.stopPropagation());
-        box.append(en, zh, source);
+        function sourceLink(path, id) {
+          const source = document.createElement('a');
+          const match = path.match(/(\d{4})(?:-(\d{2})-set(\d))?\.html$/);
+          source.textContent = match && match[2] ? match[1] + ' 年 ' + Number(match[2]) + ' 月六级 · 第 ' + match[3] + ' 套 ↗' : (match ? match[1] + ' 年考研英语一 ↗' : '查看原文 ↗');
+          source.href = new URL('../' + path + (id ? '#' + id : ''), scriptURL).href;
+          source.target = '_blank'; source.rel = 'noopener noreferrer';
+          source.addEventListener('click', e => e.stopPropagation());
+          return source;
+        }
+        phrases.forEach(phrase => {
+          const line = document.createElement('p');
+          line.textContent = phrase[0] + '  ·  ' + phrase[1] + '  ';
+          line.append(sourceLink(phrase[2], phrase[3]));
+          box.append(line);
+        });
+        if (item) {
+          const en = document.createElement('p'); en.lang = 'en'; en.textContent = item[2];
+          const zh = document.createElement('p'); zh.className = 'usage-zh'; zh.textContent = item[3];
+          box.append(en, zh, sourceLink(item[0], item[1]));
+        }
         button.addEventListener('click', e => {
           e.stopPropagation();
           const open = box.hidden;
           box.hidden = !open; button.setAttribute('aria-expanded', String(open));
-          button.textContent = open ? '收起例句  −' : '真题例句  +';
+          button.textContent = open ? '收起用法  −' : '真题用法  +';
         });
         holder.after(button, box);
       });
