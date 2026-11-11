@@ -253,3 +253,6 @@
 
   global.K = { LS, esc, reduce, daySet, saveDay, toggle, countDay, clearDay, addWords, countTo, rowHtml, createFlash, revealCards };
 })(window);
+
+/* 真题例句：异步加载，失败时原词表仍可正常使用 */
+(function(){var s=document.createElement('script');s.src=new URL('word-usage.js?v=20261111a',document.currentScript.src).href;document.head.appendChild(s);}());
