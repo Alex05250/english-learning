@@ -18,9 +18,9 @@
     @media(prefers-reduced-motion:reduce){.usage-toggle,.usage-toggle .usage-icon{transition:none}.usage-body{animation:none}}
   `;
   document.head.appendChild(css);
-  const getJSON = name => fetch(new URL(name + '?v=20261112b', scriptURL)).then(r => { if (!r.ok) throw Error(name); return r.json(); }).catch(() => null);
-  Promise.all([getJSON(isKY ? 'usage-ky.json' : 'usage-cet.json'), getJSON('common-usage.json'), getJSON('dictionary-phrases.json')]).then(([data, common, dictionary]) => {
-    data = data || {index:{},sentences:[],phrases:{}}; common = common || {}; dictionary = dictionary || {};
+  const getJSON = name => fetch(new URL(name + '?v=20261112c', scriptURL)).then(r => { if (!r.ok) throw Error(name); return r.json(); }).catch(() => null);
+  Promise.all([getJSON(isKY ? 'usage-ky.json' : 'usage-cet.json'), getJSON('common-usage.json'), getJSON('dictionary-phrases.json'), getJSON('tatoeba-reviewed.json')]).then(([data, common, dictionary, reviewed]) => {
+    data = data || {index:{},sentences:[],phrases:{}}; common = common || {}; dictionary = dictionary || {}; reviewed = reviewed || {};
     function sourceLink(path, id) {
       const source = document.createElement('a'); source.className = 'usage-source';
       const match = path.match(/(\d{4})(?:-(\d{2})-set(\d))?\.html$/);
@@ -40,7 +40,8 @@
         const phrases = (data.phrases && data.phrases[word]) || [];
         const everyday = common[word];
         const dictionaryPhrases = (dictionary[word] || []).filter(pair => !everyday || !everyday.collocations.some(c => c[0].toLowerCase() === pair[0]));
-        if (!item && !phrases.length && !everyday && !dictionaryPhrases.length) return;
+        const checked = reviewed[word] || [];
+        if (!item && !phrases.length && !everyday && !dictionaryPhrases.length && !checked.length) return;
         const holder = row.querySelector('.senses'); if (!holder) return;
         row.dataset.usageReady = '1';
         const button = element('button', 'usage-toggle'); button.type = 'button'; button.setAttribute('aria-expanded', 'false');
@@ -62,6 +63,21 @@
           const note = element('p', 'usage-note', '来源：ECDICT；按 Brown 语料出现次数初筛，释义可能随语境变化。 ');
           const link = element('a', 'usage-source', '数据说明 ↗'); link.href = new URL('../dictionary-sources.html', scriptURL).href;
           link.target = '_blank'; link.rel = 'noopener noreferrer'; link.addEventListener('click', e => e.stopPropagation()); note.append(link); section.append(note); box.append(section);
+        }
+        if (checked.length) {
+          const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '常用搭配 · 双语例句'));
+          checked.forEach(entry => {
+            const line = element('p', 'usage-phrase'); const strong = element('strong', '', entry.phrase); strong.lang = 'en';
+            line.append(strong, element('span', 'usage-translation', '  ·  ' + entry.meaning));
+            const en = element('p', 'usage-example', entry.en); en.lang = 'en';
+            const note = element('p', 'usage-note', 'Tatoeba 例句（非真题） · ');
+            const original = element('a', 'usage-source', '英文原句：' + entry.en_author + ' ↗'); original.href = 'https://tatoeba.org/en/sentences/show/' + entry.en_id;
+            const translation = element('a', 'usage-source', '中文译句：' + entry.zh_author + ' ↗'); translation.href = 'https://tatoeba.org/en/sentences/show/' + entry.zh_id;
+            [original,translation].forEach(a => { a.target='_blank'; a.rel='noopener noreferrer'; a.addEventListener('click', e => e.stopPropagation()); });
+            note.append(original, document.createTextNode('  ·  '), translation);
+            section.append(line, en, element('p', 'usage-zh', entry.zh), note);
+          });
+          box.append(section);
         }
         if (item || phrases.length) {
           const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '真题用法'));
