@@ -4,51 +4,61 @@
   const isKY = /(^|\/)kaoyan(?:\/|-words\.html)/.test(location.pathname);
   if (!document.getElementById('groups') && !document.getElementById('hits')) return;
   const css = document.createElement('style');
-  css.textContent = '.usage-toggle{margin:9px 0 0;padding:0;border:0;background:none;color:var(--faint,#86868b);font:inherit;font-size:12px;cursor:pointer}.usage-toggle:hover{color:var(--text,#1d1d1f)}.usage-body{margin:8px 0 3px;padding:10px 12px;border-left:2px solid #d2d2d7;color:var(--text,#1d1d1f);font-size:13px;line-height:1.6}.usage-body p{margin:0 0 5px}.usage-body .usage-zh{color:var(--faint,#86868b)}.usage-body a{color:inherit;font-size:11px;text-decoration:underline;text-underline-offset:3px}.wrow.hide:not(.show) .usage-body{filter:blur(5px);user-select:none}';
+  css.textContent = `
+    .usage-toggle{display:inline-flex;align-items:center;gap:7px;margin:10px 0 0;padding:5px 10px;border:1px solid var(--line);border-radius:99px;background:var(--fill);color:var(--sub);font:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:color .2s var(--ease),background .2s var(--ease),border-color .2s var(--ease),transform .2s var(--ease)}
+    .usage-toggle:hover,.usage-toggle[aria-expanded=true]{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,transparent);background:color-mix(in srgb,var(--accent) 9%,var(--card))}
+    .usage-toggle:active{transform:scale(.97)}.usage-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    .usage-toggle .usage-icon{font-size:15px;line-height:1;transition:transform .25s var(--ease)}.usage-toggle[aria-expanded=true] .usage-icon{transform:rotate(45deg)}
+    .usage-body{margin:10px 0 3px;padding:15px 16px;border:1px solid var(--line);border-radius:14px;background:var(--fill);color:var(--fg);font-size:13px;line-height:1.65;animation:usage-in .3s var(--ease) both}
+    .usage-body[hidden]{display:none}.usage-section+.usage-section{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+    .usage-label{display:block;margin-bottom:8px;color:var(--sub);font-size:11px;font-weight:700;letter-spacing:.04em}.usage-phrase{margin:0 0 8px}.usage-phrase strong{font-weight:650;color:var(--fg)}.usage-translation{color:var(--sub)}
+    .usage-example{margin:9px 0 2px;color:var(--fg)}.usage-zh{margin:0;color:var(--sub)}.usage-source{display:inline-block;margin-top:7px;color:var(--accent);font-size:11px;text-decoration:none}.usage-source:hover{text-decoration:underline}.usage-note{margin-top:7px;color:var(--sub);font-size:11px}
+    .wrow.hide:not(.show) .usage-body{filter:blur(5px);user-select:none}
+    @keyframes usage-in{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+    @media(prefers-reduced-motion:reduce){.usage-toggle,.usage-toggle .usage-icon{transition:none}.usage-body{animation:none}}
+  `;
   document.head.appendChild(css);
-  function start(data) {
+  const getJSON = name => fetch(new URL(name + '?v=20261112a', scriptURL)).then(r => { if (!r.ok) throw Error(name); return r.json(); }).catch(() => null);
+  Promise.all([getJSON(isKY ? 'usage-ky.json' : 'usage-cet.json'), getJSON('common-usage.json')]).then(([data, common]) => {
+    data = data || {index:{},sentences:[],phrases:{}}; common = common || {};
+    function sourceLink(path, id) {
+      const source = document.createElement('a'); source.className = 'usage-source';
+      const match = path.match(/(\d{4})(?:-(\d{2})-set(\d))?\.html$/);
+      source.textContent = match && match[2] ? match[1] + ' 年 ' + Number(match[2]) + ' 月六级 · 第 ' + match[3] + ' 套 ↗' : (match ? match[1] + ' 年考研英语一 ↗' : '查看原文 ↗');
+      source.href = new URL('../' + path + (id ? '#' + id : ''), scriptURL).href;
+      source.target = '_blank'; source.rel = 'noopener noreferrer'; source.addEventListener('click', e => e.stopPropagation());
+      return source;
+    }
+    function element(tag, cls, text) { const el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; }
     function decorate(root) {
       const rows = root.matches && root.matches('.wrow') ? [root] : [];
       if (root.querySelectorAll) rows.push(...root.querySelectorAll('.wrow'));
       rows.forEach(row => {
         if (row.dataset.usageReady) return;
-        row.dataset.usageReady = '1';
         const word = (row.dataset.w || '').toLowerCase();
-        const item = Object.prototype.hasOwnProperty.call(data.index, word) ? data.sentences[data.index[word]] : null;
+        const item = Object.prototype.hasOwnProperty.call(data.index || {}, word) ? data.sentences[data.index[word]] : null;
         const phrases = (data.phrases && data.phrases[word]) || [];
-        if (!item && !phrases.length) return;
-        const holder = row.querySelector('.senses');
-        if (!holder) return;
-        const button = document.createElement('button');
-        button.type = 'button'; button.className = 'usage-toggle';
-        button.textContent = '真题用法  +'; button.setAttribute('aria-expanded', 'false');
-        const box = document.createElement('div'); box.className = 'usage-body'; box.hidden = true;
-        function sourceLink(path, id) {
-          const source = document.createElement('a');
-          const match = path.match(/(\d{4})(?:-(\d{2})-set(\d))?\.html$/);
-          source.textContent = match && match[2] ? match[1] + ' 年 ' + Number(match[2]) + ' 月六级 · 第 ' + match[3] + ' 套 ↗' : (match ? match[1] + ' 年考研英语一 ↗' : '查看原文 ↗');
-          source.href = new URL('../' + path + (id ? '#' + id : ''), scriptURL).href;
-          source.target = '_blank'; source.rel = 'noopener noreferrer';
-          source.addEventListener('click', e => e.stopPropagation());
-          return source;
+        const everyday = common[word];
+        if (!item && !phrases.length && !everyday) return;
+        const holder = row.querySelector('.senses'); if (!holder) return;
+        row.dataset.usageReady = '1';
+        const button = element('button', 'usage-toggle'); button.type = 'button'; button.setAttribute('aria-expanded', 'false');
+        button.append(element('span', '', '搭配与例句'), element('span', 'usage-icon', '+'));
+        const box = element('div', 'usage-body'); box.hidden = true;
+        if (everyday) {
+          const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '常用搭配'));
+          everyday.collocations.forEach(([phrase, zh]) => { const line = element('p', 'usage-phrase'); const strong = element('strong', '', phrase); strong.lang = 'en'; line.append(strong, element('span', 'usage-translation', '  ·  ' + zh)); section.append(line); });
+          const en = element('p', 'usage-example', everyday.example[0]); en.lang = 'en';
+          section.append(en, element('p', 'usage-zh', everyday.example[1]), element('p', 'usage-note', '例句为学习示例，非真题原句'));
+          box.append(section);
         }
-        phrases.forEach(phrase => {
-          const line = document.createElement('p');
-          line.textContent = phrase[0] + '  ·  ' + phrase[1] + '  ';
-          line.append(sourceLink(phrase[2], phrase[3]));
-          box.append(line);
-        });
-        if (item) {
-          const en = document.createElement('p'); en.lang = 'en'; en.textContent = item[2];
-          const zh = document.createElement('p'); zh.className = 'usage-zh'; zh.textContent = item[3];
-          box.append(en, zh, sourceLink(item[0], item[1]));
+        if (item || phrases.length) {
+          const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '真题用法'));
+          phrases.forEach(phrase => { const line = element('p', 'usage-phrase'); line.append(element('strong', '', phrase[0]), element('span', 'usage-translation', '  ·  ' + phrase[1]), document.createElement('br'), sourceLink(phrase[2], phrase[3])); section.append(line); });
+          if (item) { const en = element('p', 'usage-example', item[2]); en.lang = 'en'; section.append(en, element('p', 'usage-zh', item[3]), sourceLink(item[0], item[1])); }
+          box.append(section);
         }
-        button.addEventListener('click', e => {
-          e.stopPropagation();
-          const open = box.hidden;
-          box.hidden = !open; button.setAttribute('aria-expanded', String(open));
-          button.textContent = open ? '收起用法  −' : '真题用法  +';
-        });
+        button.addEventListener('click', e => { e.stopPropagation(); const open = box.hidden; box.hidden = !open; button.setAttribute('aria-expanded', String(open)); });
         holder.after(button, box);
       });
     }
@@ -56,8 +66,5 @@
     new MutationObserver(mutations => mutations.forEach(m => m.addedNodes.forEach(n => {
       if (n.nodeType === 1 && !n.classList.contains('usage-body') && !n.classList.contains('usage-toggle')) decorate(n);
     }))).observe(document.body, {childList:true, subtree:true});
-  }
-  fetch(new URL(isKY ? 'usage-ky.json' : 'usage-cet.json', scriptURL))
-    .then(r => { if (!r.ok) throw new Error('usage data unavailable'); return r.json(); })
-    .then(start).catch(() => {});
+  });
 })();
