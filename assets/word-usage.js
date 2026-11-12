@@ -18,9 +18,9 @@
     @media(prefers-reduced-motion:reduce){.usage-toggle,.usage-toggle .usage-icon{transition:none}.usage-body{animation:none}}
   `;
   document.head.appendChild(css);
-  const getJSON = name => fetch(new URL(name + '?v=20261112a', scriptURL)).then(r => { if (!r.ok) throw Error(name); return r.json(); }).catch(() => null);
-  Promise.all([getJSON(isKY ? 'usage-ky.json' : 'usage-cet.json'), getJSON('common-usage.json')]).then(([data, common]) => {
-    data = data || {index:{},sentences:[],phrases:{}}; common = common || {};
+  const getJSON = name => fetch(new URL(name + '?v=20261112b', scriptURL)).then(r => { if (!r.ok) throw Error(name); return r.json(); }).catch(() => null);
+  Promise.all([getJSON(isKY ? 'usage-ky.json' : 'usage-cet.json'), getJSON('common-usage.json'), getJSON('dictionary-phrases.json')]).then(([data, common, dictionary]) => {
+    data = data || {index:{},sentences:[],phrases:{}}; common = common || {}; dictionary = dictionary || {};
     function sourceLink(path, id) {
       const source = document.createElement('a'); source.className = 'usage-source';
       const match = path.match(/(\d{4})(?:-(\d{2})-set(\d))?\.html$/);
@@ -39,7 +39,8 @@
         const item = Object.prototype.hasOwnProperty.call(data.index || {}, word) ? data.sentences[data.index[word]] : null;
         const phrases = (data.phrases && data.phrases[word]) || [];
         const everyday = common[word];
-        if (!item && !phrases.length && !everyday) return;
+        const dictionaryPhrases = (dictionary[word] || []).filter(pair => !everyday || !everyday.collocations.some(c => c[0].toLowerCase() === pair[0]));
+        if (!item && !phrases.length && !everyday && !dictionaryPhrases.length) return;
         const holder = row.querySelector('.senses'); if (!holder) return;
         row.dataset.usageReady = '1';
         const button = element('button', 'usage-toggle'); button.type = 'button'; button.setAttribute('aria-expanded', 'false');
@@ -51,6 +52,16 @@
           const en = element('p', 'usage-example', everyday.example[0]); en.lang = 'en';
           section.append(en, element('p', 'usage-zh', everyday.example[1]), element('p', 'usage-note', '例句为学习示例，非真题原句'));
           box.append(section);
+        }
+        if (dictionaryPhrases.length) {
+          const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '词典搭配 · 语料筛选'));
+          dictionaryPhrases.forEach(([phrase, zh]) => {
+            const line = element('p', 'usage-phrase'); const strong = element('strong', '', phrase); strong.lang = 'en';
+            line.append(strong, element('span', 'usage-translation', '  ·  ' + zh)); section.append(line);
+          });
+          const note = element('p', 'usage-note', '来源：ECDICT；按 Brown 语料出现次数初筛，释义可能随语境变化。 ');
+          const link = element('a', 'usage-source', '数据说明 ↗'); link.href = new URL('../dictionary-sources.html', scriptURL).href;
+          link.target = '_blank'; link.rel = 'noopener noreferrer'; link.addEventListener('click', e => e.stopPropagation()); note.append(link); section.append(note); box.append(section);
         }
         if (item || phrases.length) {
           const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '真题用法'));
