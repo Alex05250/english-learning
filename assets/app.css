@@ -264,7 +264,7 @@ footer a:hover{color:var(--accent)}
 }
 .ihead h1 .dim{color:var(--sub)}
 .ihead .lede{
-  font-size:14.5px;color:var(--sub);line-height:1.68;max-width:46ch;
+  font-size:14.5px;color:var(--sub);line-height:1.68;max-width:46ch;margin:0;
   letter-spacing:-.004em;text-wrap:pretty;
 }
 .iprog{
