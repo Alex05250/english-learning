@@ -2,6 +2,7 @@
   'use strict';
   const scriptURL = document.currentScript.src;
   const isKY = /(^|\/)kaoyan(?:\/|-words\.html)/.test(location.pathname);
+  const isAll = /(^|\/)all-words\.html/.test(location.pathname);
   if (!document.getElementById('groups') && !document.getElementById('hits')) return;
   const css = document.createElement('style');
   css.textContent = `
@@ -19,8 +20,16 @@
   `;
   document.head.appendChild(css);
   const getJSON = name => fetch(new URL(name + '?v=20261112c', scriptURL)).then(r => { if (!r.ok) throw Error(name); return r.json(); }).catch(() => null);
-  Promise.all([getJSON(isKY ? 'usage-ky.json' : 'usage-cet.json'), getJSON('common-usage.json'), getJSON('dictionary-phrases.json'), getJSON('tatoeba-reviewed.json')]).then(([data, common, dictionary, reviewed]) => {
-    data = data || {index:{},sentences:[],phrases:{}}; common = common || {}; dictionary = dictionary || {}; reviewed = reviewed || {};
+  Promise.all([
+    getJSON(isKY ? 'usage-ky.json' : 'usage-cet.json'),
+    isAll ? getJSON('usage-ky.json') : Promise.resolve(null),
+    getJSON('common-usage.json'),
+    getJSON('dictionary-phrases.json'),
+    getJSON('tatoeba-reviewed.json')
+  ]).then(([data, kyData, common, dictionary, reviewed]) => {
+    data = data || {index:{},sentences:[],phrases:{}}; kyData = kyData || {index:{},sentences:[],phrases:{}};
+    common = common || {}; dictionary = dictionary || {}; reviewed = reviewed || {};
+    const getSentence = (src, word) => Object.prototype.hasOwnProperty.call(src.index || {}, word) ? src.sentences[src.index[word]] : null;
     function sourceLink(path, id) {
       const source = document.createElement('a'); source.className = 'usage-source';
       const match = path.match(/(\d{4})(?:-(\d{2})-set(\d))?\.html$/);
@@ -36,8 +45,8 @@
       rows.forEach(row => {
         if (row.dataset.usageReady) return;
         const word = (row.dataset.w || '').toLowerCase();
-        const item = Object.prototype.hasOwnProperty.call(data.index || {}, word) ? data.sentences[data.index[word]] : null;
-        const phrases = (data.phrases && data.phrases[word]) || [];
+        const item = getSentence(data, word) || getSentence(kyData, word);
+        const phrases = ((data.phrases && data.phrases[word]) || []).concat((kyData.phrases && kyData.phrases[word]) || []);
         const everyday = common[word];
         const dictionaryPhrases = (dictionary[word] || []).filter(pair => !everyday || !everyday.collocations.some(c => c[0].toLowerCase() === pair[0]));
         const checked = reviewed[word] || [];

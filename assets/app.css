@@ -281,14 +281,21 @@ footer a:hover{color:var(--accent)}
 .ipmeta b{color:var(--sub);font-weight:600}
 .igo{
   margin-top:15px;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 16px;
-  border-radius:99px;background:var(--accent);color:#fff;text-decoration:none;
-  font-size:12.5px;font-weight:600;white-space:nowrap;
-  transition:filter .2s var(--ease),transform .18s var(--ease);
+  border-radius:99px;border:1px solid var(--accent);background:var(--accent);color:#fff;text-decoration:none;
+  font-size:12.5px;font-weight:600;white-space:nowrap;cursor:pointer;
+  transition:filter .2s var(--ease),transform .18s var(--ease),background .2s var(--ease),border-color .2s var(--ease);
 }
 .igo:hover{filter:brightness(1.08)}
 .igo:active{transform:scale(.97)}
 .igo .arw{transition:transform .3s var(--ease)}
 .igo:hover .arw{transform:translateX(3px)}
+.igo-row{margin-top:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.igo-row .igo{margin-top:0}
+.igo.igo--sub{
+  background:transparent;color:var(--accent);
+  border-color:color-mix(in srgb,var(--accent) 28%,transparent);
+}
+.igo.igo--sub:hover{background:color-mix(in srgb,var(--accent) 9%,transparent);filter:none}
 
 /* 索引页工具条：左对齐 + 过滤胶囊 */
 .toolbar .inner{justify-content:flex-start}
