@@ -18,7 +18,15 @@
     @media(prefers-reduced-motion:reduce){.usage-toggle,.usage-toggle .usage-icon{transition:none}.usage-body{animation:none}}
   `;
   document.head.appendChild(css);
-  const getJSON = name => fetch(new URL(name + '?v=20261112c', scriptURL)).then(r => { if (!r.ok) throw Error(name); return r.json(); }).catch(() => null);
+  const getJSON = name => fetch(new URL(name + '?v=20261114a', scriptURL)).then(r => { if (!r.ok) throw Error(name); return r.json(); }).catch(() => null);
+  const shardRequests = new Map();
+  function getExtra(word) {
+    const letter = /^[a-z]/.test(word) ? word[0] : 'other';
+    if (!shardRequests.has(letter)) shardRequests.set(letter, getJSON('usage-extra/' + letter + '.json'));
+    return shardRequests.get(letter).then(data => data && data[word]);
+  }
+  const extraSource = 'https://github.com/KyleBing/english-vocabulary/blob/731240a848dca14e2cf17510f384312b788863c1/full_line_jsonl/sentence/正序/';
+  const extraBooks = ['六级', '考研', '四级', '高中'];
   Promise.all([getJSON(isKY ? 'usage-ky.json' : 'usage-cet.json'), getJSON('common-usage.json'), getJSON('dictionary-phrases.json'), getJSON('tatoeba-reviewed.json')]).then(([data, common, dictionary, reviewed]) => {
     data = data || {index:{},sentences:[],phrases:{}}; common = common || {}; dictionary = dictionary || {}; reviewed = reviewed || {};
     function sourceLink(path, id) {
@@ -36,56 +44,100 @@
       rows.forEach(row => {
         if (row.dataset.usageReady) return;
         const word = (row.dataset.w || '').toLowerCase();
-        const item = Object.prototype.hasOwnProperty.call(data.index || {}, word) ? data.sentences[data.index[word]] : null;
+        const ids = Object.prototype.hasOwnProperty.call(data.index || {}, word) ? data.index[word] : [];
+        const items = (Array.isArray(ids) ? ids : [ids]).map(i => data.sentences[i]).filter(Boolean);
         const phrases = (data.phrases && data.phrases[word]) || [];
         const everyday = common[word];
         const dictionaryPhrases = (dictionary[word] || []).filter(pair => !everyday || !everyday.collocations.some(c => c[0].toLowerCase() === pair[0]));
         const checked = reviewed[word] || [];
-        if (!item && !phrases.length && !everyday && !dictionaryPhrases.length && !checked.length) return;
         const holder = row.querySelector('.senses'); if (!holder) return;
         row.dataset.usageReady = '1';
         const button = element('button', 'usage-toggle'); button.type = 'button'; button.setAttribute('aria-expanded', 'false');
-        button.append(element('span', '', '搭配与例句'), element('span', 'usage-icon', '+'));
+        button.append(element('span', '', '用法与例句'), element('span', 'usage-icon', '+'));
         const box = element('div', 'usage-body'); box.hidden = true;
-        if (everyday) {
-          const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '常用搭配'));
-          everyday.collocations.forEach(([phrase, zh]) => { const line = element('p', 'usage-phrase'); const strong = element('strong', '', phrase); strong.lang = 'en'; line.append(strong, element('span', 'usage-translation', '  ·  ' + zh)); section.append(line); });
-          const en = element('p', 'usage-example', everyday.example[0]); en.lang = 'en';
-          section.append(en, element('p', 'usage-zh', everyday.example[1]), element('p', 'usage-note', '例句为学习示例，非真题原句'));
-          box.append(section);
+        let built = false;
+        function buildLocal() {
+          if (everyday) {
+            const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '常用搭配'));
+            everyday.collocations.forEach(([phrase, zh]) => { const line = element('p', 'usage-phrase'); const strong = element('strong', '', phrase); strong.lang = 'en'; line.append(strong, element('span', 'usage-translation', '  ·  ' + zh)); section.append(line); });
+            const en = element('p', 'usage-example', everyday.example[0]); en.lang = 'en';
+            section.append(en, element('p', 'usage-zh', everyday.example[1]), element('p', 'usage-note', '例句为学习示例，非真题原句'));
+            box.append(section);
+          }
+          if (dictionaryPhrases.length) {
+            const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '词典搭配 · 语料筛选'));
+            dictionaryPhrases.forEach(([phrase, zh]) => {
+              const line = element('p', 'usage-phrase'); const strong = element('strong', '', phrase); strong.lang = 'en';
+              line.append(strong, element('span', 'usage-translation', '  ·  ' + zh)); section.append(line);
+            });
+            const note = element('p', 'usage-note', '来源：ECDICT；按 Brown 语料出现次数初筛，释义可能随语境变化。 ');
+            const link = element('a', 'usage-source', '数据说明 ↗'); link.href = new URL('../dictionary-sources.html', scriptURL).href;
+            link.target = '_blank'; link.rel = 'noopener noreferrer'; link.addEventListener('click', e => e.stopPropagation()); note.append(link); section.append(note); box.append(section);
+          }
+          if (checked.length) {
+            const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '常用搭配 · 双语例句'));
+            checked.forEach(entry => {
+              const line = element('p', 'usage-phrase'); const strong = element('strong', '', entry.phrase); strong.lang = 'en';
+              line.append(strong, element('span', 'usage-translation', '  ·  ' + entry.meaning));
+              const en = element('p', 'usage-example', entry.en); en.lang = 'en';
+              const note = element('p', 'usage-note', 'Tatoeba 例句（非真题） · ');
+              const original = element('a', 'usage-source', '英文原句：' + entry.en_author + ' ↗'); original.href = 'https://tatoeba.org/en/sentences/show/' + entry.en_id;
+              const translation = element('a', 'usage-source', '中文译句：' + entry.zh_author + ' ↗'); translation.href = 'https://tatoeba.org/en/sentences/show/' + entry.zh_id;
+              [original,translation].forEach(a => { a.target='_blank'; a.rel='noopener noreferrer'; a.addEventListener('click', e => e.stopPropagation()); });
+              note.append(original, document.createTextNode('  ·  '), translation);
+              section.append(line, en, element('p', 'usage-zh', entry.zh), note);
+            });
+            box.append(section);
+          }
+          if (items.length || phrases.length) {
+            const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '真题用法'));
+            phrases.forEach(phrase => { const line = element('p', 'usage-phrase'); line.append(element('strong', '', phrase[0]), element('span', 'usage-translation', '  ·  ' + phrase[1]), document.createElement('br'), sourceLink(phrase[2], phrase[3])); section.append(line); });
+            items.forEach(item => { const en = element('p', 'usage-example', item[2]); en.lang = 'en'; section.append(en, element('p', 'usage-zh', item[3]), sourceLink(item[0], item[1])); });
+            box.append(section);
+          }
         }
-        if (dictionaryPhrases.length) {
-          const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '词典搭配 · 语料筛选'));
-          dictionaryPhrases.forEach(([phrase, zh]) => {
-            const line = element('p', 'usage-phrase'); const strong = element('strong', '', phrase); strong.lang = 'en';
-            line.append(strong, element('span', 'usage-translation', '  ·  ' + zh)); section.append(line);
+        button.addEventListener('click', e => {
+          e.stopPropagation(); const open = box.hidden; box.hidden = !open; button.setAttribute('aria-expanded', String(open));
+          if (!open || built) return;
+          built = true;
+          buildLocal();
+          const loading = element('p', 'usage-note', '正在加载更多双语搭配与例句…');
+          loading.setAttribute('role', 'status'); box.append(loading);
+          getExtra(word).then(extra => {
+            loading.remove();
+            if (extra) {
+              const section = element('section', 'usage-section');
+              section.append(element('span', 'usage-label', '词库搭配与双语例句 · 非真题'));
+              const known = new Set([...phrases, ...dictionaryPhrases, ...(everyday ? everyday.collocations : [])].map(p => p[0].toLowerCase()));
+              function attribution(pair) {
+                const a = element('a', 'usage-source', extraBooks[pair[2]] + '词库原条目 ↗');
+                a.href = extraSource + encodeURIComponent(extraBooks[pair[2]]) + '.jsonl#L' + pair[3];
+                a.target = '_blank'; a.rel = 'noopener noreferrer'; a.addEventListener('click', e => e.stopPropagation());
+                return a;
+              }
+              extra.phrases.filter(p => !known.has(p[0].toLowerCase())).forEach(pair => {
+                const line = element('p', 'usage-phrase'); const strong = element('strong', '', pair[0]); strong.lang = 'en';
+                line.append(strong, element('span', 'usage-translation', '  ·  ' + pair[1]), document.createElement('br'), attribution(pair)); section.append(line);
+              });
+              const seen = new Set([...items.map(i => i[2]), ...checked.map(i => i.en), ...(everyday ? [everyday.example[0]] : [])].map(t => t.toLowerCase().trim()));
+              extra.examples.filter(p => !seen.has(p[0].toLowerCase().trim())).forEach(pair => {
+                const en = element('p', 'usage-example', pair[0]); en.lang = 'en';
+                section.append(en, element('p', 'usage-zh', pair[1]), attribution(pair));
+              });
+              section.append(element('p', 'usage-note', '来源：KyleBing / english-vocabulary（BSD-3-Clause）。自动筛选，释义需结合语境。'));
+              box.prepend(section);
+            }
+            if (!extra && !box.children.length) {
+              box.append(element('p', 'usage-note', '此词的本地用法与例句尚待补充，可先查阅词典。'));
+            }
+            const more = element('p', 'usage-note', '更多义项与用法：');
+            [['Cambridge', 'https://dictionary.cambridge.org/dictionary/english-chinese-simplified/'], ['Oxford', 'https://www.oxfordlearnersdictionaries.com/definition/english/']].forEach(([name, url]) => {
+              const a = element('a', 'usage-source', name + ' ↗'); a.href = url + encodeURIComponent(word); a.target = '_blank'; a.rel = 'noopener noreferrer';
+              a.addEventListener('click', e => e.stopPropagation()); more.append(document.createTextNode('  '), a);
+            });
+            box.append(more);
           });
-          const note = element('p', 'usage-note', '来源：ECDICT；按 Brown 语料出现次数初筛，释义可能随语境变化。 ');
-          const link = element('a', 'usage-source', '数据说明 ↗'); link.href = new URL('../dictionary-sources.html', scriptURL).href;
-          link.target = '_blank'; link.rel = 'noopener noreferrer'; link.addEventListener('click', e => e.stopPropagation()); note.append(link); section.append(note); box.append(section);
-        }
-        if (checked.length) {
-          const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '常用搭配 · 双语例句'));
-          checked.forEach(entry => {
-            const line = element('p', 'usage-phrase'); const strong = element('strong', '', entry.phrase); strong.lang = 'en';
-            line.append(strong, element('span', 'usage-translation', '  ·  ' + entry.meaning));
-            const en = element('p', 'usage-example', entry.en); en.lang = 'en';
-            const note = element('p', 'usage-note', 'Tatoeba 例句（非真题） · ');
-            const original = element('a', 'usage-source', '英文原句：' + entry.en_author + ' ↗'); original.href = 'https://tatoeba.org/en/sentences/show/' + entry.en_id;
-            const translation = element('a', 'usage-source', '中文译句：' + entry.zh_author + ' ↗'); translation.href = 'https://tatoeba.org/en/sentences/show/' + entry.zh_id;
-            [original,translation].forEach(a => { a.target='_blank'; a.rel='noopener noreferrer'; a.addEventListener('click', e => e.stopPropagation()); });
-            note.append(original, document.createTextNode('  ·  '), translation);
-            section.append(line, en, element('p', 'usage-zh', entry.zh), note);
-          });
-          box.append(section);
-        }
-        if (item || phrases.length) {
-          const section = element('section', 'usage-section'); section.append(element('span', 'usage-label', '真题用法'));
-          phrases.forEach(phrase => { const line = element('p', 'usage-phrase'); line.append(element('strong', '', phrase[0]), element('span', 'usage-translation', '  ·  ' + phrase[1]), document.createElement('br'), sourceLink(phrase[2], phrase[3])); section.append(line); });
-          if (item) { const en = element('p', 'usage-example', item[2]); en.lang = 'en'; section.append(en, element('p', 'usage-zh', item[3]), sourceLink(item[0], item[1])); }
-          box.append(section);
-        }
-        button.addEventListener('click', e => { e.stopPropagation(); const open = box.hidden; box.hidden = !open; button.setAttribute('aria-expanded', String(open)); });
+        });
         holder.after(button, box);
       });
     }
