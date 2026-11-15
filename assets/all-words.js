@@ -299,11 +299,11 @@
     if (!flash) {
       const deck = ITEMS.map(r => [r[0], r[1], r[2], r[3], r[4]]);
       flash = core.createFlash($('#flash'), deck, {
-        onChange: () => { refreshProgress(true); syncTicks(); }
+        onChange: () => { refreshProgress(true); syncTicks(); },
+        store: 'all-list'
       });
-    } else {
-      flash.open();
     }
+    flash.open();
     $('#flash').classList.add('on');
   }
   function closeFlash() {

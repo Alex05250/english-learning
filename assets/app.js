@@ -81,15 +81,57 @@
     </div>`;
   }
 
-  /* ── 闪卡组件 ── */
+  /* ── 闪卡：键盘操作 + 位置持久化 ── */
+  const flashKey = n => 'cet6-card-' + n;
+  /* 桌面浏览器：细指针 + 悬停能力，且视口够宽；手机/平板不弹键盘提示 */
+  const desktop = () => !!(matchMedia('(hover:hover) and (pointer:fine)').matches && innerWidth >= 900);
+
   function createFlash(root, deck, opts) {
     opts = opts || {};
-    let ci = 0, flip = false, pool = deck.slice(), drawTimer = 0;
-    const roundWeak = new Set();          // 本轮标过「不熟」的词，供「重测」用
+    const storeKey = opts.store ? flashKey(opts.store) : '';
+    const byWord = new Map();
+    deck.forEach(r => { if (!byWord.has(r[2])) byWord.set(r[2], r); });
+    const fatDeck = deck.length > 400;    // 总复习大盘：只记位置，不记洗牌顺序
+
+    let ci = 0, flip = false, pool = deck.slice(), drawTimer = 0, resumed = null;
+    let roundWeak = new Set();            // 本轮标过「不熟」的词，供「重测」用
     let tx = 0, ty = 0, tt = 0, tapLock = 0;
     const $ = s => root.querySelector(s);
     const card = $('#fcard');
     const stage = $('.fstage') || card;
+
+    /* ── 关掉再进来接着背：位置 / 不熟 / 只练未熟 / 洗牌顺序 ── */
+    function readState() {
+      if (!storeKey) return null;
+      try {
+        const o = JSON.parse(localStorage.getItem(storeKey) || 'null');
+        return o && typeof o === 'object' ? o : null;
+      } catch (e) { return null; }
+    }
+    function saveState() {
+      if (!storeKey) return;
+      const o = { v: 1, i: pool.length ? ci % pool.length : 0, weak: opts.weakActive ? 1 : 0, rw: Array.from(roundWeak) };
+      if (!fatDeck) o.pool = pool.map(r => r[2]);
+      try { localStorage.setItem(storeKey, JSON.stringify(o)); } catch (e) {}
+    }
+    function restoreState() {
+      const st = readState();
+      if (!st) return;
+      if (st.weak && $('#fWeak')) { opts.weakActive = true; $('#fWeak').textContent = '练全部'; }
+      if (!fatDeck && Array.isArray(st.pool) && st.pool.length) {
+        const p = st.pool.map(w => byWord.get(w)).filter(Boolean);
+        if (p.length) pool = p;
+      } else if (opts.weakActive) {
+        const p = deck.filter(r => !daySet(r[0]).has(r[2]));
+        if (p.length) pool = p;
+      }
+      roundWeak = new Set((Array.isArray(st.rw) ? st.rw : []).filter(w => byWord.has(w)));
+      const i = Math.max(0, parseInt(st.i, 10) || 0);
+      ci = pool.length ? Math.min(i, pool.length - 1) : 0;
+      syncRetest();
+      if (ci > 0 || roundWeak.size) resumed = { pos: ci + 1, total: pool.length };
+    }
+    addEventListener('pagehide', saveState);
 
     /* 翻页导航：‹ 上一张 | 3 / 186 | 下一张 ›（按钮 / ←→ / 左右滑动三通道） */
     const nav = document.createElement('div');
@@ -115,7 +157,7 @@
       clearTimeout(drawTimer);
       ci = ((ci % pool.length) + delta + pool.length) % pool.length;
       flip = false; card.classList.remove('flip');
-      draw();
+      draw(); saveState();
       if (!reduce) { card.classList.remove('fswap'); void card.offsetWidth; card.classList.add('fswap'); }
     }
     prevB.onclick = () => go(-1);
@@ -149,13 +191,20 @@
         syncRetest();
       }
       ci++; flip = false; card.classList.remove('flip');
+      saveState();
       clearTimeout(drawTimer); drawTimer = setTimeout(draw, 60);
     }
-    card.onclick = () => { if (Date.now() < tapLock) return; flip = !flip; card.classList.toggle('flip', flip); };
-    card.onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); card.onclick(); } };
+    function flipCard() { if (!pool.length) return; flip = !flip; card.classList.toggle('flip', flip); }
+    card.onclick = () => { if (Date.now() < tapLock) return; flipCard(); };
     $('#fYes').onclick = () => advance(true);
     $('#fNo').onclick = () => advance(false);
-    $('#fShuffle').onclick = () => { pool.sort(() => Math.random() - .5); roundWeak.clear(); syncRetest(); ci = 0; flip = false; card.classList.remove('flip'); draw(); };
+    $('#fShuffle').onclick = () => {
+      const a = pool.slice();
+      for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+      pool = a; roundWeak.clear(); syncRetest();
+      ci = 0; flip = false; card.classList.remove('flip');
+      draw(); saveState();
+    };
 
     /* 重测：本轮标过「不熟」的词重刷一遍；本轮没有不熟就从第 1 张整轮重来 */
     const retest = document.createElement('button');
@@ -171,7 +220,7 @@
       roundWeak.clear();
       if (opts.weakActive) { opts.weakActive = false; if ($('#fWeak')) $('#fWeak').textContent = '只练未熟'; }
       ci = 0; flip = false; card.classList.remove('flip');
-      syncRetest(); draw();
+      syncRetest(); draw(); saveState();
     };
     function syncRetest() {
       retest.textContent = roundWeak.size ? '重测（' + roundWeak.size + '）' : '重测';
@@ -181,15 +230,31 @@
     }
     syncRetest();
 
-    /* 键盘 ←→（仅在当前闪卡面板可见时生效） */
+    /* 键盘：← → 翻页，空格翻面，1 不熟，2 已会，S 洗牌，R 重测，? 再唤提示
+       仅在当前闪卡面板可见时生效；输入框里打字不抢键 */
     function onKey(e) {
       if (!root.classList.contains('on')) return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const t = e.target;
-      if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
-      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-      e.preventDefault();
-      go(e.key === 'ArrowRight' ? 1 : -1);
+      if (t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable)) return;
+      const k = e.key;
+      if (k === 'Escape') {
+        hideCoach();
+        if ($('#fClose')) { root.classList.remove('on'); saveState(); }
+        return;
+      }
+      if (k === '?') { e.preventDefault(); showCoach(resumed); return; }
+      if (k === 'ArrowLeft') { e.preventDefault(); go(-1); return; }
+      if (k === 'ArrowRight') { e.preventDefault(); go(1); return; }
+      if (k === ' ' || k === 'Spacebar' || k === 'Enter') {
+        // 回车留给已获得焦点的按钮，其余一律翻面；空格始终翻面（按钮的回车/空格默认行为被拦掉）
+        if (k === 'Enter' && t && t.closest && t.closest('button')) return;
+        e.preventDefault(); flipCard(); return;
+      }
+      if (k === '1' || k === 'j' || k === 'J') { e.preventDefault(); advance(false); return; }
+      if (k === '2' || k === 'k' || k === 'K') { e.preventDefault(); advance(true); return; }
+      if (k === 's' || k === 'S') { e.preventDefault(); $('#fShuffle').click(); return; }
+      if (k === 'r' || k === 'R') { e.preventDefault(); retest.click(); return; }
     }
     document.addEventListener('keydown', onKey);
 
@@ -208,23 +273,86 @@
       tapLock = Date.now() + 420;
       go(dx < 0 ? 1 : -1);
     }, { passive: true });
-    if ($('#fClose')) $('#fClose').onclick = () => root.classList.remove('on');
+    /* ── 桌面端键盘教练：进入卡片弹一次、5 秒自收；按 ? 可再唤出 ── */
+    const COACH_MS = 5000;
+    let coach = null, coachTimer = 0, coachLeave = 0, hinted = false;
+
+    function buildCoach() {
+      const el = document.createElement('div');
+      el.className = 'kbcoach';
+      el.setAttribute('role', 'status');
+      el.innerHTML = '<div class="kbc-row">'
+        + '<span class="kbc-key" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="1.8" y="5.6" width="20.4" height="12.8" rx="3"/>'
+        + '<path d="M5.6 9.6h.01M9.2 9.6h.01M12.8 9.6h.01M16.4 9.6h.01M5.6 12.8h.01M9.2 12.8h.01M12.8 12.8h.01M16.4 12.8h.01M8.2 16h7.6"/></svg></span>'
+        + '<div class="kbc-body"><p class="kbc-t">用键盘背单词</p>'
+        + '<p class="kbc-sub"><span><kbd>←</kbd><kbd>→</kbd>上一张 · 下一张</span>'
+        + '<span><kbd>空格</kbd>翻面</span><span><kbd>1</kbd>不熟</span><span><kbd>2</kbd>已会</span></p>'
+        + '<p class="kbc-resume" hidden></p></div>'
+        + '<button class="kbc-x" type="button" aria-label="关闭键盘提示">知道了</button>'
+        + '</div><i class="kbc-bar" aria-hidden="true"></i>';
+      document.body.appendChild(el);
+      el.querySelector('.kbc-x').onclick = hideCoach;
+      return el;
+    }
+
+    function hideCoach() {
+      clearTimeout(coachTimer);
+      if (!coach || !coach.classList.contains('on')) return;
+      coach.classList.add('leaving');
+      coach.classList.remove('on');
+      clearTimeout(coachLeave);
+      coachLeave = setTimeout(() => { if (coach) coach.classList.remove('leaving'); }, 340);
+    }
+
+    function showCoach(info) {
+      if (!desktop()) return;
+      if (!coach) coach = buildCoach();
+      const note = coach.querySelector('.kbc-resume');
+      note.hidden = !info;
+      if (info) note.textContent = '上次停在第 ' + info.pos + ' / ' + info.total + ' 张，已经接上';
+      // 重放：进度条归位再走 5 秒，浮层重新入场
+      const bar = coach.querySelector('.kbc-bar');
+      bar.style.transition = 'none';
+      bar.style.transform = 'scaleX(1)';
+      coach.classList.remove('on');
+      void coach.offsetWidth;
+      bar.style.transition = 'transform ' + COACH_MS + 'ms linear';
+      bar.style.transform = 'scaleX(0)';
+      coach.classList.add('on');
+      clearTimeout(coachTimer);
+      coachTimer = setTimeout(hideCoach, COACH_MS);
+    }
+
+    /* 每次进卡片面板只自动提示一次，打扰可控 */
+    function hint() {
+      if (hinted || !desktop()) return;
+      hinted = true;
+      showCoach(resumed);
+    }
+
+    if ($('#fClose')) $('#fClose').onclick = () => { root.classList.remove('on'); saveState(); };
     function reset() {
       pool = (opts.weakActive ? deck.filter(r => !daySet(r[0]).has(r[2])) : deck.slice()).slice();
       if (!pool.length) pool = deck.slice();
       roundWeak.clear(); syncRetest();
       ci = 0; flip = false; card.classList.remove('flip');
-      draw();
+      draw(); saveState();
     }
     if ($('#fWeak')) $('#fWeak').onclick = () => {
       opts.weakActive = !opts.weakActive;
       $('#fWeak').textContent = opts.weakActive ? '练全部' : '只练未熟';
       reset();
     };
+    if (desktop() && $('#fh')) $('#fh').textContent = '空格翻面 · ← → 翻页 · 1 不熟 · 2 已会';
+    restoreState();
     draw();
     return {
-      redraw: draw, reset,
-      open() { ci = 0; flip = false; card.classList.remove('flip'); draw(); }
+      redraw: draw, reset, hint, save: saveState,
+      open() {
+        // 索引页的搜索框可能还留着焦点，不清掉会把 1 / 2 / 空格 都吃掉
+        if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+        flip = false; card.classList.remove('flip'); draw(); hint();
+      }
     };
   }
 
