@@ -128,6 +128,57 @@ details.group.is-gone{height:0!important;opacity:0;border-bottom-width:0;pointer
 .toast .tact:hover{text-decoration:underline}
 .toast .tact[hidden]{display:none}
 
+/* 桌面端键盘教练：毛玻璃浮层，下沉式入场 + 5 秒倒计时，只弹一次不挡路 */
+.kbcoach{
+  position:fixed;left:50%;top:calc(58px + env(safe-area-inset-top,0px));z-index:400;
+  width:min(524px,calc(100vw - 32px));padding:13px 13px 15px 15px;border-radius:17px;
+  display:flex;flex-direction:column;overflow:hidden;
+  background:color-mix(in srgb,var(--card) 92%,transparent);
+  -webkit-backdrop-filter:saturate(190%) blur(26px);backdrop-filter:saturate(190%) blur(26px);
+  border:1px solid color-mix(in srgb,var(--fg) 9%,transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb,#fff 14%,transparent),
+    0 24px 60px -26px rgba(0,0,0,.55),
+    0 2px 10px -4px rgba(0,0,0,.18);
+  opacity:0;pointer-events:none;
+  transform:translate(-50%,-14px) scale(.965);filter:blur(7px);
+  transition:opacity .42s var(--ease),transform .58s var(--ease),filter .42s var(--ease);
+}
+.kbcoach.on{opacity:1;pointer-events:auto;transform:translate(-50%,0) scale(1);filter:blur(0)}
+.kbcoach.leaving{transition-duration:.22s,.22s,.22s}
+.kbcoach .kbc-row{display:flex;align-items:center;gap:13px}
+.kbcoach .kbc-key{
+  flex:none;width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--accent) 18%,transparent);
+}
+.kbcoach .kbc-key svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.kbcoach .kbc-body{flex:1;min-width:0}
+.kbcoach .kbc-t{font-size:13.5px;font-weight:600;letter-spacing:-.012em;line-height:1.25}
+.kbcoach .kbc-sub{display:flex;flex-wrap:wrap;gap:5px 15px;margin-top:6px;font-size:12px;color:var(--sub)}
+.kbcoach .kbc-sub span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.kbcoach kbd{
+  font:inherit;font-size:11px;line-height:1;padding:3.5px 5.5px;border-radius:5px;color:var(--fg);
+  background:color-mix(in srgb,var(--fg) 7%,transparent);
+  border:1px solid color-mix(in srgb,var(--fg) 11%,transparent);
+  box-shadow:0 1px 0 color-mix(in srgb,var(--fg) 9%,transparent);
+}
+.kbcoach .kbc-resume{font-size:11.5px;color:var(--faint);margin-top:6px;letter-spacing:.002em}
+.kbcoach .kbc-resume[hidden]{display:none}
+.kbcoach .kbc-x{
+  flex:none;font-size:12px;font-weight:600;color:var(--sub);cursor:pointer;
+  background:transparent;border:1px solid var(--line);border-radius:99px;padding:7px 13px;
+  transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease);
+}
+.kbcoach .kbc-x:hover{color:var(--fg);border-color:color-mix(in srgb,var(--fg) 26%,transparent);background:color-mix(in srgb,var(--fg) 4%,transparent)}
+.kbcoach .kbc-x:active{transform:scale(.96)}
+.kbcoach .kbc-bar{
+  position:absolute;left:0;right:0;bottom:0;height:2px;transform-origin:left center;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 85%,transparent),color-mix(in srgb,var(--accent) 25%,transparent));
+  transform:scaleX(1);
+}
+@media (max-width:899px){ .kbcoach{display:none} }
+
 /* 分组折叠 */
 details.group{border-bottom:1px solid var(--hair)}
 details.group>summary{

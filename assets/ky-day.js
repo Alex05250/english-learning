@@ -170,8 +170,9 @@
   });
 
   /* ── 闪卡 ── */
+  /* ── 闪卡：进度按天落盘，关掉页面再进来接着背 ── */
   const deck = ITEMS.map(it => [DAY, it[0], it[1], it[2], it[3]]);
-  const flash = K.createFlash($('#p-card'), deck, { onChange: () => refresh(true) });
+  const flash = K.createFlash($('#p-card'), deck, { onChange: () => refresh(true), store: 'day' + DAY });
 
   /* ── 测验：覆盖当天全部词，一题一个词，随机顺序 ── */
   let qs = [], qi = 0, navTimer = 0;
@@ -330,22 +331,29 @@
       </a>`).join('');
   }
 
-  /* ── 标签切换 ── */
+  /* ── 标签切换：记住上次停留的标签，回来还是这一页 ── */
   const panels = { list: $('#p-list'), card: $('#p-card'), quiz: $('#p-quiz'), review: $('#p-review') };
-  document.querySelectorAll('.tabs button').forEach(b => {
-    b.onclick = () => {
-      document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === b)));
-      Object.keys(panels).forEach(k => panels[k].classList.toggle('on', k === b.dataset.t));
-      if (b.dataset.t === 'card') flash.redraw();
-      if (b.dataset.t === 'quiz' && !qs.length) buildQuiz();
-      if (b.dataset.t === 'review') refresh(false);
-      if (b.dataset.t === 'list' && weakOnly) buildList();
-      scrollTo({ top: 0, behavior: 'smooth' });
-    };
-  });
+  const TABKEY = 'ky-tab-' + DAY;
+  const readTab = () => { try { return localStorage.getItem(TABKEY) || ''; } catch (e) { return ''; } };
+  const saveTab = n => { try { localStorage.setItem(TABKEY, n); } catch (e) {} };
+
+  function activate(name, quiet) {
+    const b = document.querySelector('.tabs button[data-t="' + name + '"]');
+    if (!b || !panels[name]) return;
+    document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    Object.keys(panels).forEach(k => panels[k].classList.toggle('on', k === name));
+    if (name === 'card') { flash.redraw(); flash.hint(); }
+    if (name === 'quiz' && !qs.length) buildQuiz();
+    if (name === 'review') refresh(false);
+    if (name === 'list' && weakOnly) buildList();
+    if (!quiet) scrollTo({ top: 0, behavior: 'smooth' });
+    saveTab(name);
+  }
+  document.querySelectorAll('.tabs button').forEach(b => { b.onclick = () => activate(b.dataset.t); });
 
   /* ── 启动 ── */
   buildList();
   buildReview();
   refresh(true);
+  if (readTab() === 'card') activate('card', true);
 })();
