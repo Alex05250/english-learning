@@ -225,31 +225,30 @@
     }
     syncRetest();
 
-    /* 键盘：← → 翻页，空格翻面，1 不熟，2 已会，S 洗牌，R 重测，? 再唤提示
-       仅在当前闪卡面板可见时生效；输入框里打字不抢键 */
+    /* 键盘：A/D 上一张·下一张，W 已会，S 不熟，空格翻面，R 重测，? 再唤提示
+       方向键与 1/2 作为别名保留；仅在当前闪卡面板可见时生效，输入框里不抢键 */
     function onKey(e) {
       if (!root.classList.contains('on')) return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const t = e.target;
       if (t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable)) return;
-      const k = e.key;
+      const k = e.key, low = k.length === 1 ? k.toLowerCase() : k;
       if (k === 'Escape') {
         hideCoach();
         if ($('#fClose')) { root.classList.remove('on'); saveState(); }
         return;
       }
       if (k === '?') { e.preventDefault(); showCoach(resumed); return; }
-      if (k === 'ArrowLeft') { e.preventDefault(); go(-1); return; }
-      if (k === 'ArrowRight') { e.preventDefault(); go(1); return; }
+      if (low === 'a' || k === 'ArrowLeft') { e.preventDefault(); go(-1); return; }
+      if (low === 'd' || k === 'ArrowRight') { e.preventDefault(); go(1); return; }
       if (k === ' ' || k === 'Spacebar' || k === 'Enter') {
         // 回车留给已获得焦点的按钮，其余一律翻面；空格始终翻面（按钮的回车/空格默认行为被拦掉）
         if (k === 'Enter' && t && t.closest && t.closest('button')) return;
         e.preventDefault(); flipCard(); return;
       }
-      if (k === '1' || k === 'j' || k === 'J') { e.preventDefault(); advance(false); return; }
-      if (k === '2' || k === 'k' || k === 'K') { e.preventDefault(); advance(true); return; }
-      if (k === 's' || k === 'S') { e.preventDefault(); $('#fShuffle').click(); return; }
-      if (k === 'r' || k === 'R') { e.preventDefault(); retest.click(); return; }
+      if (low === 'w' || k === '2') { e.preventDefault(); advance(true); return; }
+      if (low === 's' || k === '1') { e.preventDefault(); advance(false); return; }
+      if (low === 'r') { e.preventDefault(); retest.click(); return; }
     }
     document.addEventListener('keydown', onKey);
 
@@ -280,8 +279,8 @@
         + '<span class="kbc-key" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="1.8" y="5.6" width="20.4" height="12.8" rx="3"/>'
         + '<path d="M5.6 9.6h.01M9.2 9.6h.01M12.8 9.6h.01M16.4 9.6h.01M5.6 12.8h.01M9.2 12.8h.01M12.8 12.8h.01M16.4 12.8h.01M8.2 16h7.6"/></svg></span>'
         + '<div class="kbc-body"><p class="kbc-t">用键盘背单词</p>'
-        + '<p class="kbc-sub"><span><kbd>←</kbd><kbd>→</kbd>上一张 · 下一张</span>'
-        + '<span><kbd>空格</kbd>翻面</span><span><kbd>1</kbd>不熟</span><span><kbd>2</kbd>已会</span></p>'
+        + '<p class="kbc-sub"><span><kbd>A</kbd><kbd>D</kbd>上一张 · 下一张</span>'
+        + '<span><kbd>W</kbd>已会</span><span><kbd>S</kbd>不熟</span><span><kbd>空格</kbd>翻面</span></p>'
         + '<p class="kbc-resume" hidden></p></div>'
         + '<button class="kbc-x" type="button" aria-label="关闭键盘提示">知道了</button>'
         + '</div><i class="kbc-bar" aria-hidden="true"></i>';
@@ -338,7 +337,7 @@
       $('#fWeak').textContent = opts.weakActive ? '练全部' : '只练未熟';
       reset();
     };
-    if (desktop() && $('#fh')) $('#fh').textContent = '空格翻面 · ← → 翻页 · 1 不熟 · 2 已会';
+    if (desktop() && $('#fh')) $('#fh').textContent = 'A / D 翻页 · W 已会 · S 不熟 · 空格翻面';
     restoreState();
     draw();
     return {
